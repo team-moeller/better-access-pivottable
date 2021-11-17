@@ -1,2 +1,2 @@
-# Better-Access-Pivottable
-Better pivottable for Access with pivottable.js
+# Better-Access-PivotTable
+Better pivot-tables for Access with pivottable.js
