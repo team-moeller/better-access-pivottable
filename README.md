@@ -1,5 +1,5 @@
 # Better-Access-PivotTable
-Better pivot-tables for Access with pivottable.js
+Better pivot tables for Access with pivottable.js
 
 ## Why Better PivotTable for Access?
 
