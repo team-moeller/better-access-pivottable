@@ -2,24 +2,32 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "cls_Better_Access_Pivottable"
+Attribute VB_Name = "BAPT_PivotTable"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 '###############################################################################################
-'# Copyright (c) 2021 Thomas MÃ¶ller                                                            #
+'# Copyright (c) 2021 Thomas Möller                                                            #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.03.05  published: 26.11.2021                                                      #
+'# Version 1.04.39  published: 30.11.2021                                                      #
 '###############################################################################################
 
 Option Compare Database
 Option Explicit
 
 
+'### Enums
+
+Public Enum ptScriptSource
+    CDN = 1
+    LocalFile = 2
+End Enum
+
+
 '### Members
 
-Private WithEvents m_Control As WebbrowserControl
+Private WithEvents m_Control As WebBrowserControl
 Attribute m_Control.VB_VarHelpID = -1
 Private m_IsInteractive As Boolean
 Private m_DataSourceObjectName As String
@@ -29,10 +37,10 @@ Private m_Rows As String
 
 '### Properties
 
-Public Property Set Control(This_Control As WebbrowserControl)
+Public Property Set Control(This_Control As WebBrowserControl)
     Set m_Control = This_Control
 End Property
-Public Property Get Control() As WebbrowserControl
+Public Property Get Control() As WebBrowserControl
     Set Control = m_Control
 End Property
 
@@ -90,6 +98,13 @@ Public Sub ShowPivot()
     
 End Sub
 
+    
+'### Initializer
+
+Public Sub Init(Optional ByVal TheControl As WebBrowserControl)
+      Set Me.Control = TheControl
+End Sub
+
 
 '### Private Methods
 
@@ -132,10 +147,10 @@ Private Function getHead() As String
     strText = strText & "    <meta http-equiv='X-UA-Compatible' content='IE=Edge'/>" & vbCrLf
     strText = strText & "    <title>PivotTable</title>" & vbCrLf
     strText = strText & "    <style>body{margin:0;padding:0;}</style>" & vbCrLf
-    strText = strText & "    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/pivottable/2.23.0/pivot.min.css'>" & vbCrLf
-    strText = strText & "    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js'></script>" & vbCrLf
-    strText = strText & "    <script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js'></script>" & vbCrLf
-    strText = strText & "    <script src='https://cdnjs.cloudflare.com/ajax/libs/pivottable/2.23.0/pivot.min.js'></script>" & vbCrLf
+    strText = strText & "    <link rel='stylesheet' href=" & BAPT.Scripts.PivotCSS.getLocation & ">" & vbCrLf
+    strText = strText & "    <script src=" & BAPT.Scripts.JQueryJS.getLocation & "></script>" & vbCrLf
+    strText = strText & "    <script src=" & BAPT.Scripts.JQueryUI.getLocation & "></script>" & vbCrLf
+    strText = strText & "    <script src=" & BAPT.Scripts.PivotJS.getLocation & "></script>" & vbCrLf
     strText = strText & "</head>" & vbCrLf
     strText = strText & "<body>" & vbCrLf
     strText = strText & "    <div id='output' style='margin: 30px;'></div>" & vbCrLf
