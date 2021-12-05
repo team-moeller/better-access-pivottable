@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021 Thomas Möller                                                            #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.05.04  published: 04.12.2021                                                      #
+'# Version 1.06.14  published: 05.12.2021                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -33,6 +33,7 @@ Private m_IsInteractive As Boolean
 Private m_DataSourceObjectName As String
 Private m_Columns As String
 Private m_Rows As String
+Private m_SaveHtmlFileForDebugging As Boolean
 
 
 '### Properties
@@ -78,6 +79,13 @@ Public Property Get Rows() As String
     Rows = m_Rows
 End Property
 
+Public Property Let SaveHtmlFileForDebugging(ByVal This_SaveHtmlFileForDebugging As Boolean)
+    m_SaveHtmlFileForDebugging = This_SaveHtmlFileForDebugging
+End Property
+Public Property Get SaveHtmlFileForDebugging() As Boolean
+    SaveHtmlFileForDebugging = m_SaveHtmlFileForDebugging
+End Property
+
 
 '### Instanzing
 
@@ -93,14 +101,12 @@ End Sub
 '### Public Methods
 
 Public Sub ShowPivot()
-
-    Dim Datei As String
     
-    CreateHtmlFile
-       
-    Datei = CurrentProject.Path & "\BetterAccessPivotTable.html"
-    
-    Control.Object.Navigate Datei
+    With Control.Object.Document
+        .Open
+        .Write getHtmlString
+        .Close
+    End With
     
 End Sub
 
@@ -114,54 +120,51 @@ End Sub
 
 '### Private Methods
 
-Private Sub CreateHtmlFile()
+Private Function getHtmlString()
 
     'Variablen deklarieren
-    Dim d As Integer
-    Dim strPath As String
-    Dim strFilename As String
-    Dim strContent As String
-    Const ForWriting As Long = 2
+    Dim strHtml As New BAPT_StringBuilder
     
-    strPath = CurrentProject.Path
-    strFilename = "\BetterAccessPivotTable.html"
-    
-    strContent = strContent & getHead
-    strContent = strContent & getData
-    strContent = strContent & getScript
-    strContent = strContent & getFoot
+    With strHtml
+        .AddLine getHead
+        .AddLine getData
+        .AddLine getScript
+        .AddLine getFoot
+    End With
  
-    d = FreeFile()
-    Open strPath & strFilename For Output As d
-    Print #d, strContent;
+    If m_SaveHtmlFileForDebugging = True Then
+        Call saveHtmlFile(strHtml.ToString)
+    End If
  
-    Close d
-  
-End Sub
+    getHtmlString = strHtml.ToString
+      
+End Function
 
 Private Function getHead() As String
 
     'Variablen deklarieren
-    Dim strText As String
+    Dim strText As New BAPT_StringBuilder
     
-    strText = strText & "<!DOCTYPE html>" & vbCrLf
-    strText = strText & "<!-- saved from url=(0014)about:internet -->" & vbCrLf
-    strText = strText & "<!-- saved from url=(0016)http://localhost -->" & vbCrLf
-    strText = strText & "<html>" & vbCrLf
-    strText = strText & "<head>" & vbCrLf
-    strText = strText & "    <meta charset='utf-8'>" & vbCrLf
-    strText = strText & "    <meta http-equiv='X-UA-Compatible' content='IE=Edge'/>" & vbCrLf
-    strText = strText & "    <title>PivotTable</title>" & vbCrLf
-    strText = strText & "    <style>body{margin:0;padding:0;}</style>" & vbCrLf
-    strText = strText & "    <link rel='stylesheet' href=" & BAPT.Scripts.PivotCSS.getLocation & ">" & vbCrLf
-    strText = strText & "    <script src=" & BAPT.Scripts.JQueryJS.getLocation & "></script>" & vbCrLf
-    strText = strText & "    <script src=" & BAPT.Scripts.JQueryUI.getLocation & "></script>" & vbCrLf
-    strText = strText & "    <script src=" & BAPT.Scripts.PivotJS.getLocation & "></script>" & vbCrLf
-    strText = strText & "</head>" & vbCrLf
-    strText = strText & "<body>" & vbCrLf
-    strText = strText & "    <div id='output' style='margin: 30px;'></div>" & vbCrLf
+    With strText
+        .AddLine "<!DOCTYPE html>"
+        .AddLine "<!-- saved from url=(0014)about:internet -->"
+        .AddLine "<!-- saved from url=(0016)http://localhost -->"
+        .AddLine "<html>"
+        .AddLine "<head>"
+        .AddLine "    <meta charset='utf-8'>"
+        .AddLine "    <meta http-equiv='X-UA-Compatible' content='IE=Edge'/>"
+        .AddLine "    <title>PivotTable</title>"
+        .AddLine "    <style>body{margin:0;padding:0;}</style>"
+        .AddLine "    <link rel='stylesheet' href=" & BAPT.Scripts.PivotCSS.getLocation & ">"
+        .AddLine "    <script src=" & BAPT.Scripts.JQueryJS.getLocation & "></script>"
+        .AddLine "    <script src=" & BAPT.Scripts.JQueryUI.getLocation & "></script>"
+        .AddLine "    <script src=" & BAPT.Scripts.PivotJS.getLocation & "></script>"
+        .AddLine "</head>"
+        .AddLine "<body>"
+        .AddLine "    <div id='output' style='margin: 30px;'></div>"
+    End With
     
-    getHead = strText
+    getHead = strText.ToString
     
 End Function
 
@@ -171,62 +174,90 @@ Private Function getData() As String
     Dim db As DAO.Database
     Dim rst As DAO.Recordset
     Dim fld As DAO.Field
-    Dim strText As String
+    Dim strText As New BAPT_StringBuilder
     Dim strLine As String
     
     Set db = CurrentDb
     Set rst = db.OpenRecordset(Me.DataSourceObjectName)
 
-    strText = strText & "    <script>" & vbCrLf
-    strText = strText & "    var data = [" & vbCrLf
-    Do While Not rst.EOF
-        strLine = "                {"
-        For Each fld In rst.Fields
-            strLine = strLine & "'" & fld.Name & "': '" & rst(fld.Name) & "', "
-        Next fld
-        strLine = Left$(strLine, Len(strLine) - 2)
-        strText = strText & strLine & "}," & vbCrLf
-        rst.MoveNext
-    Loop
-    strText = Left$(strText, Len(strText) - 3) & vbCrLf
-    strText = strText & "               ]" & vbCrLf
+    With strText
+        .AddLine "    <script>"
+        .AddLine "    var data = ["
+        Do While Not rst.EOF
+            strLine = "                {"
+            For Each fld In rst.Fields
+                strLine = strLine & "'" & fld.Name & "': '" & rst(fld.Name) & "', "
+            Next fld
+            strLine = Left$(strLine, Len(strLine) - 2)
+            .AddLine strLine & "},"
+            rst.MoveNext
+        Loop
+        .CutTrailingComma
+        .AddLine "               ]"
+    End With
     
-    getData = strText
+    getData = strText.ToString
 
 End Function
 
 Private Function getScript() As String
 
     'Variablen deklarieren
-    Dim strText As String
+    Dim strText As New BAPT_StringBuilder
     
-    strText = strText & "    $(function(){" & vbCrLf
-    If Me.IsInteractive = True Then
-        strText = strText & "        $('#output').pivotUI(" & vbCrLf
-    Else
-        strText = strText & "        $('#output').pivot(" & vbCrLf
-    End If
-    strText = strText & "            data," & vbCrLf
-    strText = strText & "            {" & vbCrLf
-    strText = strText & "                rows: [" & Me.Rows & "]," & vbCrLf
-    strText = strText & "                cols: [" & Me.Columns & "]" & vbCrLf
-    strText = strText & "            }" & vbCrLf
+    With strText
+        .AddLine "    $(function(){"
+        If Me.IsInteractive = True Then
+            .AddLine "        $('#output').pivotUI("
+        Else
+            .AddLine "        $('#output').pivot("
+        End If
+        .AddLine "            data,"
+        .AddLine "            {"
+        .AddLine "                rows: [" & Me.Rows & "],"
+        .AddLine "                cols: [" & Me.Columns & "]"
+        .AddLine "            }"
+    End With
     
-    getScript = strText
+    getScript = strText.ToString
 
 End Function
 
 Private Function getFoot() As String
 
     'Variablen deklarieren
-    Dim strText As String
+    Dim strText As New BAPT_StringBuilder
     
-    strText = strText & "        );" & vbCrLf
-    strText = strText & "     });" & vbCrLf
-    strText = strText & "    </script>" & vbCrLf
-    strText = strText & "</body>" & vbCrLf
-    strText = strText & "</html>"
+    With strText
+        .AddLine "        );"
+        .AddLine "     });"
+        .AddLine "    </script>"
+        .AddLine "</body>"
+        .AddLine "</html>"
+    End With
     
-    getFoot = strText
+    getFoot = strText.ToString
     
 End Function
+
+
+'### Private Helper Methods
+
+Private Sub saveHtmlFile(ByVal strContent As String)
+
+    'Declarations
+    Dim strPath As String
+    Dim strFileName As String
+    Dim f As Integer
+    Const HtmlFileName As String = "BetterAccessChart_{}.html"
+    
+    strPath = CurrentProject.Path & "\"
+    strFileName = Replace(HtmlFileName, "{}", m_Control.Name)
+    
+    f = FreeFile()
+    Open strPath & strFileName For Output As f
+    Print #f, strContent;
+    Close f
+    
+End Sub
+

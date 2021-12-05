@@ -10,7 +10,7 @@ Attribute VB_Exposed = False
 '###############################################################################################
 '# Copyright (c) 2021 Thomas Möller                                                            #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.05.04  published: 04.12.2021                                                      #
+'# Version 1.06.14  published: 05.12.2021                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -22,6 +22,18 @@ Option Explicit
 #Else
     Private Declare Function MakeSureDirectoryPathExists Lib "imagehlp.dll" (ByVal lpPath As String) As Long
 #End If
+
+Friend Function CutTrailingComma(ByVal strText As String) As String
+
+    If Right$(strText, 1) = "," Then
+        CutTrailingComma = Left$(strText, Len(strText) - 1)
+    ElseIf Right$(strText, 3) = "," & vbCrLf Then
+        CutTrailingComma = Left$(strText, Len(strText) - 3) & vbCrLf
+    Else
+        CutTrailingComma = strText
+    End If
+
+End Function
 
 Friend Function SaveFileToDisk(ByVal FileName As String, ByVal Path As String) As Boolean
 On Error GoTo Handle_Error
