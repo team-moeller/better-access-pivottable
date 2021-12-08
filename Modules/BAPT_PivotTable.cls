@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021 Thomas Möller                                                            #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.06.14  published: 05.12.2021                                                      #
+'# Version 1.07.05  published: 08.12.2021                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -34,6 +34,7 @@ Private m_DataSourceObjectName As String
 Private m_Columns As String
 Private m_Rows As String
 Private m_SaveHtmlFileForDebugging As Boolean
+Private m_ShowInBrowser As Boolean
 
 
 '### Properties
@@ -86,6 +87,13 @@ Public Property Get SaveHtmlFileForDebugging() As Boolean
     SaveHtmlFileForDebugging = m_SaveHtmlFileForDebugging
 End Property
 
+Public Property Let ShowInBrowser(newValue As Boolean)
+    m_ShowInBrowser = newValue
+End Property
+Public Property Get ShowInBrowser() As Boolean
+    ShowInBrowser = m_ShowInBrowser
+End Property
+
 
 '### Instanzing
 
@@ -101,8 +109,22 @@ End Sub
 '### Public Methods
 
 Public Sub ShowPivot()
+
+    'Declarations
+    Dim m_IE As Object
+    Dim Doc As Object
     
-    With Control.Object.Document
+    If Me.ShowInBrowser = True Then
+        Set m_IE = CreateObject("InternetExplorer.Application")
+        m_IE.Navigate "about:"
+        m_IE.Visible = True
+        Do While m_IE.ReadyState <> 4: DoEvents: Loop
+        Set Doc = m_IE.Document
+    Else
+        Set Doc = Control.Object.Document
+    End If
+    
+    With Doc
         .Open
         .Write getHtmlString
         .Close
@@ -122,7 +144,7 @@ End Sub
 
 Private Function getHtmlString()
 
-    'Variablen deklarieren
+    'Declarations
     Dim strHtml As New BAPT_StringBuilder
     
     With strHtml
@@ -142,7 +164,7 @@ End Function
 
 Private Function getHead() As String
 
-    'Variablen deklarieren
+    'Declarations
     Dim strText As New BAPT_StringBuilder
     
     With strText
@@ -170,7 +192,7 @@ End Function
 
 Private Function getData() As String
 
-    'Variablen deklarieren
+    'Declarations
     Dim db As DAO.Database
     Dim rst As DAO.Recordset
     Dim fld As DAO.Field
@@ -202,7 +224,7 @@ End Function
 
 Private Function getScript() As String
 
-    'Variablen deklarieren
+    'Declarations
     Dim strText As New BAPT_StringBuilder
     
     With strText
@@ -225,7 +247,7 @@ End Function
 
 Private Function getFoot() As String
 
-    'Variablen deklarieren
+    'Declarations
     Dim strText As New BAPT_StringBuilder
     
     With strText

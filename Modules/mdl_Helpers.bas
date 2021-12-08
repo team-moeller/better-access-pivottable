@@ -2,7 +2,7 @@ Attribute VB_Name = "mdl_Helpers"
 '###############################################################################################
 '# Copyright (c) 2021 Thomas Möller                                                            #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.06.14  published: 05.12.2021                                                      #
+'# Version 1.07.05  published: 08.12.2021                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -19,7 +19,7 @@ Public Function File2OLE(ByVal Table As String, ByVal PrimaryKeyFieldName As Str
                          ByVal FileName As String, Optional ByVal InCurrentProjectPath As Boolean) As Long
 
 'Prerequisit: Record with ID must already exist
-'Call: File2OLE("USys_FileData","ID","FileData","1","Chart.min.js",True)
+'Call: File2OLE("USys_FileData","ID","FileData","1","Pivot.min.js",True)
 
     On Error GoTo Handle_Error
 
