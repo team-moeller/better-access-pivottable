@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021 Thomas Möller                                                            #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.07.05  published: 08.12.2021                                                      #
+'# Version 1.08.16  published: 11.12.2021                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -31,10 +31,11 @@ Private WithEvents m_Control As WebBrowserControl
 Attribute m_Control.VB_VarHelpID = -1
 Private m_IsInteractive As Boolean
 Private m_DataSourceObjectName As String
-Private m_Columns As String
-Private m_Rows As String
 Private m_SaveHtmlFileForDebugging As Boolean
 Private m_ShowInBrowser As Boolean
+
+Private m_Rows As BAPT_Rows
+Private m_Columns As BAPT_Columns
 
 
 '### Properties
@@ -60,26 +61,6 @@ Public Property Get DataSourceObjectName() As String
     DataSourceObjectName = m_DataSourceObjectName
 End Property
 
-Public Property Let Columns(newValue As String)
-    newValue = "'" & newValue & "'"
-    newValue = Replace(newValue, ",", "','")
-    newValue = Replace(newValue, ",' ", ",'")
-    m_Columns = newValue
-End Property
-Public Property Get Columns() As String
-    Columns = m_Columns
-End Property
-
-Public Property Let Rows(newValue As String)
-    newValue = "'" & newValue & "'"
-    newValue = Replace(newValue, ",", "','")
-    newValue = Replace(newValue, ",' ", ",'")
-    m_Rows = newValue
-End Property
-Public Property Get Rows() As String
-    Rows = m_Rows
-End Property
-
 Public Property Let SaveHtmlFileForDebugging(ByVal This_SaveHtmlFileForDebugging As Boolean)
     m_SaveHtmlFileForDebugging = This_SaveHtmlFileForDebugging
 End Property
@@ -95,10 +76,28 @@ Public Property Get ShowInBrowser() As Boolean
 End Property
 
 
+'### Object Properties
+
+Public Property Get Rows() As BAPT_Rows
+    Set Rows = m_Rows
+End Property
+
+Public Property Get Columns() As BAPT_Columns
+    Set Columns = m_Columns
+End Property
+
+
 '### Instanzing
 
 Private Sub Class_Initialize()
+    
+    'Create sub classes
+    Set m_Rows = New BAPT_Rows
+    Set m_Columns = New BAPT_Columns
+    
+    'Set default values
     IsInteractive = True
+    
 End Sub
 
 Private Sub Class_Terminate()
@@ -236,8 +235,8 @@ Private Function getScript() As String
         End If
         .AddLine "            data,"
         .AddLine "            {"
-        .AddLine "                rows: [" & Me.Rows & "],"
-        .AddLine "                cols: [" & Me.Columns & "]"
+        .AddLine "                rows: [" & Me.Rows.Fields & "],"
+        .AddLine "                cols: [" & Me.Columns.Fields & "]"
         .AddLine "            }"
     End With
     

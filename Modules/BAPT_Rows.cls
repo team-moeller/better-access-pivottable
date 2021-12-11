@@ -2,11 +2,11 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "BAPT_StringBuilder"
+Attribute VB_Name = "BAPT_Rows"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
-Attribute VB_Exposed = False
+Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021 Thomas Möller                                                            #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
@@ -17,21 +17,20 @@ Option Compare Database
 Option Explicit
 
 
-Private m_String As String
+'### Members
 
-Public Sub Add(ByVal TheString As String)
-    m_String = m_String & TheString
-End Sub
+Private m_Fields As String
 
-Public Sub AddLine(ByVal TheString As String)
-    m_String = m_String & TheString & vbCrLf
-End Sub
 
-Public Sub CutTrailingComma()
-    m_String = BAPT.Helper.CutTrailingComma(m_String)
-End Sub
+'### Properties
 
-Public Function ToString() As String
-    ToString = m_String
-End Function
+Public Property Let Fields(newValue As String)
+    newValue = "'" & newValue & "'"
+    newValue = Replace(newValue, ",", "','")
+    newValue = Replace(newValue, ",' ", ",'")
+    m_Fields = newValue
+End Property
+Public Property Get Fields() As String
+    Fields = m_Fields
+End Property
 
