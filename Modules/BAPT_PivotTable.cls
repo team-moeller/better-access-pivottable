@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021 Thomas Möller                                                            #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.08.16  published: 11.12.2021                                                      #
+'# Version 1.09.10  published: 12.12.2021                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -180,6 +180,12 @@ Private Function getHead() As String
         .AddLine "    <script src=" & BAPT.Scripts.JQueryJS.getLocation & "></script>"
         .AddLine "    <script src=" & BAPT.Scripts.JQueryUI.getLocation & "></script>"
         .AddLine "    <script src=" & BAPT.Scripts.PivotJS.getLocation & "></script>"
+        If Me.Columns.ShowTotals = False Then
+            .AddLine Me.Columns.GetCssToHideTotals
+        End If
+        If Me.Rows.ShowTotals = False Then
+            .AddLine Me.Rows.GetCssToHideTotals
+        End If
         .AddLine "</head>"
         .AddLine "<body>"
         .AddLine "    <div id='output' style='margin: 30px;'></div>"
