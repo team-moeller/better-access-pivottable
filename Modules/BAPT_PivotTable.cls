@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021 Thomas Möller                                                            #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.09.10  published: 12.12.2021                                                      #
+'# Version 1.10.11  published: 18.12.2021                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -33,6 +33,8 @@ Private m_IsInteractive As Boolean
 Private m_DataSourceObjectName As String
 Private m_SaveHtmlFileForDebugging As Boolean
 Private m_ShowInBrowser As Boolean
+Private m_Aggregator As String
+Private m_AggregatorField As String
 
 Private m_Rows As BAPT_Rows
 Private m_Columns As BAPT_Columns
@@ -75,6 +77,20 @@ Public Property Get ShowInBrowser() As Boolean
     ShowInBrowser = m_ShowInBrowser
 End Property
 
+Public Property Let Aggregator(newValue As String)
+    m_Aggregator = "'" & newValue & "'"
+End Property
+Public Property Get Aggregator() As String
+    Aggregator = m_Aggregator
+End Property
+
+Public Property Let AggregatorField(newValue As String)
+    m_AggregatorField = "'" & newValue & "'"
+End Property
+Public Property Get AggregatorField() As String
+    AggregatorField = m_AggregatorField
+End Property
+
 
 '### Object Properties
 
@@ -97,6 +113,7 @@ Private Sub Class_Initialize()
     
     'Set default values
     IsInteractive = True
+    Aggregator = "Count"
     
 End Sub
 
@@ -234,15 +251,17 @@ Private Function getScript() As String
     
     With strText
         .AddLine "    $(function(){"
-        If Me.IsInteractive = True Then
-            .AddLine "        $('#output').pivotUI("
-        Else
-            .AddLine "        $('#output').pivot("
-        End If
+        .AddLine "        $('#output').pivotUI("
         .AddLine "            data,"
         .AddLine "            {"
         .AddLine "                rows: [" & Me.Rows.Fields & "],"
-        .AddLine "                cols: [" & Me.Columns.Fields & "]"
+        .AddLine "                cols: [" & Me.Columns.Fields & "],"
+        .AddLine "                aggregatorName: " & Me.Aggregator & ","
+        .AddLine "                vals: [" & Me.AggregatorField & "],"
+        If Me.IsInteractive = False Then
+            .AddLine "                showUI: false,"
+        End If
+        .CutTrailingComma
         .AddLine "            }"
     End With
     
