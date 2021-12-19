@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021 Thomas Möller                                                            #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.10.11  published: 18.12.2021                                                      #
+'# Version 1.11.05  published: 19.12.2021                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -35,6 +35,7 @@ Private m_SaveHtmlFileForDebugging As Boolean
 Private m_ShowInBrowser As Boolean
 Private m_Aggregator As String
 Private m_AggregatorField As String
+Private m_RendererName As String
 
 Private m_Rows As BAPT_Rows
 Private m_Columns As BAPT_Columns
@@ -91,6 +92,13 @@ Public Property Get AggregatorField() As String
     AggregatorField = m_AggregatorField
 End Property
 
+Public Property Let RendererName(newValue As String)
+    m_RendererName = "'" & newValue & "'"
+End Property
+Public Property Get RendererName() As String
+    RendererName = m_RendererName
+End Property
+
 
 '### Object Properties
 
@@ -112,8 +120,9 @@ Private Sub Class_Initialize()
     Set m_Columns = New BAPT_Columns
     
     'Set default values
-    IsInteractive = True
-    Aggregator = "Count"
+    Me.IsInteractive = True
+    Me.Aggregator = "Count"
+    Me.RendererName = "Table"
     
 End Sub
 
@@ -258,6 +267,7 @@ Private Function getScript() As String
         .AddLine "                cols: [" & Me.Columns.Fields & "],"
         .AddLine "                aggregatorName: " & Me.Aggregator & ","
         .AddLine "                vals: [" & Me.AggregatorField & "],"
+        .AddLine "                rendererName: [" & Me.RendererName & "],"
         If Me.IsInteractive = False Then
             .AddLine "                showUI: false,"
         End If
