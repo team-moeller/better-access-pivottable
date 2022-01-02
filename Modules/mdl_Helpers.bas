@@ -2,7 +2,7 @@ Attribute VB_Name = "mdl_Helpers"
 '###############################################################################################
 '# Copyright (c) 2021 Thomas Möller                                                            #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.11.05  published: 19.12.2021                                                      #
+'# Version 1.12.09  published: 02.01.2022                                                      #
 '###############################################################################################
 
 Option Compare Database

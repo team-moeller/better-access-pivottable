@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021 Thomas Möller                                                            #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.11.05  published: 19.12.2021                                                      #
+'# Version 1.12.09  published: 02.01.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -23,6 +23,11 @@ Public Enum ptScriptSource
     CDN = 1
     LocalFile = 2
 End Enum
+
+
+'### Constants
+
+Private Const HtmlFileName As String = "BetterAccessPivotTable_{}.html"
 
 
 '### Members
@@ -41,6 +46,11 @@ Private m_Rows As BAPT_Rows
 Private m_Columns As BAPT_Columns
 
 
+'### Windows API Declarations
+Private Declare Function GetTempPath Lib "kernel32" Alias "GetTempPathA" _
+    (ByVal nBufferLength As Long, ByVal lpBuffer As String) As Long
+    
+    
 '### Properties
 
 Public Property Set Control(This_Control As WebBrowserControl)
@@ -139,21 +149,19 @@ Public Sub ShowPivot()
     Dim m_IE As Object
     Dim Doc As Object
     
+    CreateHtmlFile
+    
     If Me.ShowInBrowser = True Then
         Set m_IE = CreateObject("InternetExplorer.Application")
         m_IE.Navigate "about:"
         m_IE.Visible = True
         Do While m_IE.ReadyState <> 4: DoEvents: Loop
-        Set Doc = m_IE.Document
+        Set Doc = m_IE
     Else
-        Set Doc = Control.Object.Document
+        Set Doc = Control.Object
     End If
     
-    With Doc
-        .Open
-        .Write getHtmlString
-        .Close
-    End With
+    Doc.Navigate getHTMLFileName
     
 End Sub
 
@@ -167,9 +175,10 @@ End Sub
 
 '### Private Methods
 
-Private Function getHtmlString()
+Private Sub CreateHtmlFile()
 
     'Declarations
+    Dim objFS As Object
     Dim strHtml As New BAPT_StringBuilder
     
     With strHtml
@@ -182,10 +191,15 @@ Private Function getHtmlString()
     If m_SaveHtmlFileForDebugging = True Then
         Call saveHtmlFile(strHtml.ToString)
     End If
- 
-    getHtmlString = strHtml.ToString
+        
+    Set objFS = CreateObject("ADODB.Stream")
+    objFS.Charset = "utf-8"
+    objFS.Open
+    objFS.WriteText strHtml.ToString
+    objFS.SaveToFile getHTMLFileName, 2   '2: Create Or Update
+    objFS.Close
       
-End Function
+End Sub
 
 Private Function getHead() As String
 
@@ -303,17 +317,59 @@ Private Sub saveHtmlFile(ByVal strContent As String)
 
     'Declarations
     Dim strPath As String
-    Dim strFileName As String
+    Dim strFilename As String
     Dim f As Integer
     Const HtmlFileName As String = "BetterAccessChart_{}.html"
     
     strPath = CurrentProject.Path & "\"
-    strFileName = Replace(HtmlFileName, "{}", m_Control.Name)
+    strFilename = Replace(HtmlFileName, "{}", m_Control.Name)
     
     f = FreeFile()
-    Open strPath & strFileName For Output As f
+    Open strPath & strFilename For Output As f
     Print #f, strContent;
     Close f
     
 End Sub
 
+Private Function getHTMLFileName() As String
+    
+    'Declarations
+    Dim strPath As String
+    Dim strFilename As String
+    
+    strPath = getTempFolder
+    strFilename = Replace(HtmlFileName, "{}", m_Control.Name)
+
+    getHTMLFileName = strPath & strFilename
+    
+End Function
+
+Private Function getTempFolder() As String
+    
+    'Declarations
+    Dim strTempPath As String
+    Dim lngTempPath As Long
+    
+    strTempPath = String(144, vbNullChar)
+    lngTempPath = Len(strTempPath)
+    If (GetTempPath(lngTempPath, strTempPath) > 0) Then
+        getTempFolder = TrimNull(strTempPath)
+    Else
+        getTempFolder = vbNullString
+    End If
+    
+End Function
+
+Private Function TrimNull(ByVal strString As String) As String
+    
+    'Declarations
+    Dim intPos As Integer
+
+    intPos = VBA.InStr(strString, vbNullChar)
+    If intPos > 0 Then
+        TrimNull = VBA.Left$(strString, intPos - 1)
+    Else
+        TrimNull = strString
+    End If
+  
+End Function
