@@ -8,9 +8,9 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 '###############################################################################################
-'# Copyright (c) 2021 Thomas Möller                                                            #
+'# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.12.09  published: 02.01.2022                                                      #
+'# Version 1.13.09  published: 02.01.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -44,11 +44,6 @@ Private m_RendererName As String
 
 Private m_Rows As BAPT_Rows
 Private m_Columns As BAPT_Columns
-
-
-'### Windows API Declarations
-Private Declare Function GetTempPath Lib "kernel32" Alias "GetTempPathA" _
-    (ByVal nBufferLength As Long, ByVal lpBuffer As String) As Long
     
     
 '### Properties
@@ -337,39 +332,9 @@ Private Function getHTMLFileName() As String
     Dim strPath As String
     Dim strFilename As String
     
-    strPath = getTempFolder
+    strPath = BAPT.Helper.getTempFolder
     strFilename = Replace(HtmlFileName, "{}", m_Control.Name)
 
     getHTMLFileName = strPath & strFilename
     
-End Function
-
-Private Function getTempFolder() As String
-    
-    'Declarations
-    Dim strTempPath As String
-    Dim lngTempPath As Long
-    
-    strTempPath = String(144, vbNullChar)
-    lngTempPath = Len(strTempPath)
-    If (GetTempPath(lngTempPath, strTempPath) > 0) Then
-        getTempFolder = TrimNull(strTempPath)
-    Else
-        getTempFolder = vbNullString
-    End If
-    
-End Function
-
-Private Function TrimNull(ByVal strString As String) As String
-    
-    'Declarations
-    Dim intPos As Integer
-
-    intPos = VBA.InStr(strString, vbNullChar)
-    If intPos > 0 Then
-        TrimNull = VBA.Left$(strString, intPos - 1)
-    Else
-        TrimNull = strString
-    End If
-  
 End Function
