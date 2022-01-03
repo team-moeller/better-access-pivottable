@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.13.09  published: 02.01.2022                                                      #
+'# Version 1.14.07  published: 03.01.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -21,6 +21,7 @@ Option Explicit
 
 Private m_Fields As String
 Private m_ShowTotals As Boolean
+Private m_Order As ptOrder
 
 
 '### Properties
@@ -42,6 +43,12 @@ Public Property Get ShowTotals() As Boolean
     ShowTotals = m_ShowTotals
 End Property
 
+Public Property Let Order(newValue As ptOrder)
+    m_Order = newValue
+End Property
+Public Property Get Order() As ptOrder
+    Order = m_Order
+End Property
 
 '### Instanzing
 
@@ -49,6 +56,7 @@ Private Sub Class_Initialize()
     
     'Set default values
     Me.ShowTotals = True
+    Me.Order = ptOrder.key_a_to_z
     
 End Sub
 

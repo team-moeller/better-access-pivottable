@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.13.09  published: 02.01.2022                                                      #
+'# Version 1.14.07  published: 03.01.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -22,6 +22,12 @@ Option Explicit
 Public Enum ptScriptSource
     CDN = 1
     LocalFile = 2
+End Enum
+
+Public Enum ptOrder
+    key_a_to_z = 1
+    value_a_to_z = 2
+    value_z_to_a = 3
 End Enum
 
 
@@ -273,6 +279,7 @@ Private Function getScript() As String
         .AddLine "            data,"
         .AddLine "            {"
         .AddLine "                rows: [" & Me.Rows.Fields & "],"
+        .AddLine "                rowOrder: " & BAPT.Helper.getOrderString(Me.Rows.Order) & ","
         .AddLine "                cols: [" & Me.Columns.Fields & "],"
         .AddLine "                aggregatorName: " & Me.Aggregator & ","
         .AddLine "                vals: [" & Me.AggregatorField & "],"

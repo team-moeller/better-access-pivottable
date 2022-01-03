@@ -10,7 +10,7 @@ Attribute VB_Exposed = False
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.13.09  published: 02.01.2022                                                      #
+'# Version 1.14.07  published: 03.01.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -122,6 +122,21 @@ Private Function TrimNull(ByVal strString As String) As String
     Else
         TrimNull = strString
     End If
+
+End Function
+
+Friend Function getOrderString(ByVal ThisOrder As ptOrder) As String
+
+    Select Case ThisOrder
+        Case ptOrder.key_a_to_z
+            getOrderString = "'key_a_to_z'"
+        Case ptOrder.value_a_to_z
+            getOrderString = "'value_a_to_z'"
+        Case ptOrder.value_z_to_a
+            getOrderString = "'value_z_to_a'"
+        Case Else
+            getOrderString = "'key_a_to_z'"
+    End Select
 
 End Function
 
