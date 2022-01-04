@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.14.07  published: 03.01.2022                                                      #
+'# Version 1.15.05  published: 04.01.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -281,6 +281,7 @@ Private Function getScript() As String
         .AddLine "                rows: [" & Me.Rows.Fields & "],"
         .AddLine "                rowOrder: " & BAPT.Helper.getOrderString(Me.Rows.Order) & ","
         .AddLine "                cols: [" & Me.Columns.Fields & "],"
+        .AddLine "                colOrder: " & BAPT.Helper.getOrderString(Me.Columns.Order) & ","
         .AddLine "                aggregatorName: " & Me.Aggregator & ","
         .AddLine "                vals: [" & Me.AggregatorField & "],"
         .AddLine "                rendererName: [" & Me.RendererName & "],"
