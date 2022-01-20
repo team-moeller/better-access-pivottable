@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.15.05  published: 04.01.2022                                                      #
+'# Version 1.16.04  published: 20.01.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -322,7 +322,7 @@ Private Sub saveHtmlFile(ByVal strContent As String)
     Dim strPath As String
     Dim strFilename As String
     Dim f As Integer
-    Const HtmlFileName As String = "BetterAccessChart_{}.html"
+    Const HtmlFileName As String = "BetterAccessPivotTable_{}.html"
     
     strPath = CurrentProject.Path & "\"
     strFilename = Replace(HtmlFileName, "{}", m_Control.Name)

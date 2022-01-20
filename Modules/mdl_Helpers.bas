@@ -2,7 +2,7 @@ Attribute VB_Name = "mdl_Helpers"
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.15.05  published: 04.01.2022                                                      #
+'# Version 1.16.04  published: 20.01.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -86,7 +86,15 @@ Public Function IsFormOpen(ByVal strFormName As String) As Boolean
     
 End Function
 
-Public Sub PrepareAndExportModules()
+Public Sub ExportModules()
+' This method is intended for the contributor who just wants to export the modules
+
+    Call PrepareAndExportModules(False)
+
+End Sub
+
+Public Sub PrepareAndExportModules(Optional ByVal TagVersion As Boolean = True)
+' This method is intended for the power user who wants to update the version numbers in the code headers
 
     'Declarations
     Dim Version As String
@@ -99,15 +107,17 @@ Public Sub PrepareAndExportModules()
     
     For Each vbc In Application.VBE.ActiveVBProject.VBComponents
         If vbc.Type = 1 Or vbc.Type = 2 Then
-            Application.VBE.ActiveVBProject.VBComponents(vbc.Name).CodeModule.InsertLines 4, CodeLine
-            Application.VBE.ActiveVBProject.VBComponents(vbc.Name).CodeModule.DeleteLines 5, 1
+            If TagVersion Then
+                Application.VBE.ActiveVBProject.VBComponents(vbc.Name).CodeModule.InsertLines 4, CodeLine
+                Application.VBE.ActiveVBProject.VBComponents(vbc.Name).CodeModule.DeleteLines 5, 1
+            End If
     
             Application.VBE.ActiveVBProject.VBComponents(vbc.Name).Export CurrentProject.Path & "\Modules\" & vbc.Name & IIf(vbc.Type = 2, ".cls", ".bas")
         End If
     Next
     Application.DoCmd.RunCommand (acCmdCompileAndSaveAllModules)
     
-    MsgBox "Export done", vbInformation, "Better Access Charts"
+    MsgBox "Export done", vbInformation, "Better Access PivotTable"
 
 End Sub
 
@@ -115,21 +125,29 @@ Public Sub ImportModules()
 
     'Declarations
     Dim strFile As String
-    Dim vbc As Object
+    Dim strModule As String
+    Dim vbc As Object ' VBComponents
+    Dim vbModule As Object
+    Const ThisModuleName As String = "mdl_Helpers"
     
-    strFile = Dir(CurrentProject.Path & "\Modules\")
+    Set vbc = Application.VBE.ActiveVBProject.VBComponents
+    strFile = Dir$(CurrentProject.Path & "\Modules\")
     Do While Len(strFile) > 0
         On Error Resume Next
-        Set vbc = Application.VBE.ActiveVBProject.VBComponents(strFile)
-        Application.VBE.ActiveVBProject.VBComponents.Remove vbc
-        On Error GoTo 0
-        Application.VBE.ActiveVBProject.VBComponents.Import CurrentProject.Path & "\Modules\" & strFile
-        Debug.Print strFile
+        strModule = Left$(strFile, InStr(strFile, ".") - 1)
+        If strModule <> ThisModuleName Then
+            Set vbModule = vbc.Item(strModule)
+            If Not vbModule Is Nothing Then
+                Application.VBE.ActiveVBProject.VBComponents.Remove vbModule
+            End If
+            On Error GoTo 0
+            Application.VBE.ActiveVBProject.VBComponents.Import CurrentProject.Path & "\Modules\" & strFile
+        End If
         strFile = Dir
     Loop
     Application.DoCmd.RunCommand (acCmdCompileAndSaveAllModules)
     
-    MsgBox "Import done", vbInformation, "Better Access Charts"
+    MsgBox "Import done", vbInformation, "Better Access PivotTable"
 
 End Sub
 
