@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.16.04  published: 20.01.2022                                                      #
+'# Version 1.17.09  published: 23.01.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -43,7 +43,6 @@ Attribute m_Control.VB_VarHelpID = -1
 Private m_IsInteractive As Boolean
 Private m_DataSourceObjectName As String
 Private m_SaveHtmlFileForDebugging As Boolean
-Private m_ShowInBrowser As Boolean
 Private m_Aggregator As String
 Private m_AggregatorField As String
 Private m_RendererName As String
@@ -80,13 +79,6 @@ Public Property Let SaveHtmlFileForDebugging(ByVal This_SaveHtmlFileForDebugging
 End Property
 Public Property Get SaveHtmlFileForDebugging() As Boolean
     SaveHtmlFileForDebugging = m_SaveHtmlFileForDebugging
-End Property
-
-Public Property Let ShowInBrowser(newValue As Boolean)
-    m_ShowInBrowser = newValue
-End Property
-Public Property Get ShowInBrowser() As Boolean
-    ShowInBrowser = m_ShowInBrowser
 End Property
 
 Public Property Let Aggregator(newValue As String)
@@ -145,24 +137,18 @@ End Sub
 '### Public Methods
 
 Public Sub ShowPivot()
-
-    'Declarations
-    Dim m_IE As Object
-    Dim Doc As Object
     
     CreateHtmlFile
+        
+    Control.Object.Navigate getHTMLFileName
     
-    If Me.ShowInBrowser = True Then
-        Set m_IE = CreateObject("InternetExplorer.Application")
-        m_IE.Navigate "about:"
-        m_IE.Visible = True
-        Do While m_IE.ReadyState <> 4: DoEvents: Loop
-        Set Doc = m_IE
-    Else
-        Set Doc = Control.Object
-    End If
+End Sub
+
+Public Sub ShowInBrowser()
     
-    Doc.Navigate getHTMLFileName
+    CreateHtmlFile
+        
+    BAPT.Helper.ShellExecute getHTMLFileName
     
 End Sub
 

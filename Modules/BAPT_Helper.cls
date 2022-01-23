@@ -10,7 +10,7 @@ Attribute VB_Exposed = False
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.16.04  published: 20.01.2022                                                      #
+'# Version 1.17.09  published: 23.01.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -18,22 +18,67 @@ Option Explicit
 
 
 '### Windows API Declarations
+
 #If VBA7 Then
-    Private Declare PtrSafe Function GetTempPath Lib "kernel32" _
-            Alias "GetTempPathA" (ByVal nBufferLength As LongPtr, _
-                                  ByVal lpbuffer As String) As Long
+    Private Declare PtrSafe Function GetTempPath Lib "kernel32" Alias "GetTempPathA" _
+        (ByVal nBufferLength As LongPtr, ByVal lpbuffer As String) As Long
 #Else
-    Private Declare Function GetTempPath Lib "kernel32" _
-            Alias "GetTempPathA" (ByVal nBufferLength As Long, _
-                                  ByVal lpbuffer As String) As Long
+    Private Declare Function GetTempPath Lib "kernel32" Alias "GetTempPathA" _
+        (ByVal nBufferLength As Long, ByVal lpbuffer As String) As Long
 #End If
-    
 
 #If VBA7 Then
     Private Declare PtrSafe Function MakeSureDirectoryPathExists Lib "imagehlp.dll" (ByVal lpPath As String) As Long
 #Else
     Private Declare Function MakeSureDirectoryPathExists Lib "imagehlp.dll" (ByVal lpPath As String) As Long
 #End If
+
+#If VBA7 Then
+    Private Declare PtrSafe Function ShellExecuteA Lib "Shell32" _
+        (ByVal hWnd As LongPtr, ByVal lpOperation As String, _
+         ByVal lpFile As String, ByVal lpParameters As String, _
+         ByVal lpDirectory As String, ByVal nShowCmd As eShowCmd) As Long
+#Else
+    Private Declare Function ShellExecuteA Lib "Shell32" _
+        (ByVal hWnd As Long, ByVal lpOperation As String, _
+         ByVal lpFile As String, ByVal lpParameters As String, _
+         ByVal lpDirectory As String, ByVal nShowCmd As eShowCmd) As Long
+#End If
+
+
+'### Enumerations
+
+Public Enum eShowCmd
+    SW_HIDE = 0             'Blendet Fenster aus und aktiviert ein anderes Fenster
+    SW_MAXIMIZE = 3         'Maximiert Fenster und aktiviert es
+    SW_MINIMIZE = 6         'Minimiert Fenster und aktiviert ein anderes Fenster
+    SW_RESTORE = 9          'Aktiviert bisher minimiertes Fenster in aktueller Größe
+    SW_SHOW = 5             'Aktiviert Fenster in aktueller Größe
+    SW_SHOWDEFAULT = 10     'Aktiviert Fenster in ursprünglicher Größe
+    SW_SHOWMINIMIZED = 2    'Minimiert Fenster und aktiviert es
+    SW_SHOWMININOACTIVE = 7 'Minimiert Fenster. Das aktive Fenster bleibt aktiv
+    SW_SHOWNA = 8           'Fenster in aktueller Größe. Aktives Fenster bleibt aktiv
+    SW_SHOWNOACTIVATE = 4   'Fenster in neuer Größe. Das aktive Fenster bleibt aktiv
+    SW_SHOWNORMAL = 1       'Aktiviert Fenster. Falls schon min/maximiert, normale Größe
+End Enum
+
+
+'### Functions
+
+Friend Function getOrderString(ByVal ThisOrder As ptOrder) As String
+
+    Select Case ThisOrder
+        Case ptOrder.key_a_to_z
+            getOrderString = "'key_a_to_z'"
+        Case ptOrder.value_a_to_z
+            getOrderString = "'value_a_to_z'"
+        Case ptOrder.value_z_to_a
+            getOrderString = "'value_z_to_a'"
+        Case Else
+            getOrderString = "'key_a_to_z'"
+    End Select
+
+End Function
 
 Friend Function CutTrailingComma(ByVal strText As String) As String
 
@@ -97,46 +142,23 @@ End Function
 
 Friend Function getTempFolder() As String
     
-    'Declarations
-    Dim strTempPath As String
-    Dim lngTempPath As Long
-    
-    strTempPath = String(144, vbNullChar)
-    lngTempPath = Len(strTempPath)
-    If (GetTempPath(lngTempPath, strTempPath) > 0) Then
-        getTempFolder = TrimNull(strTempPath)
-    Else
-        getTempFolder = vbNullString
+    'Declaration
+    Dim RetVal As Long
+    Dim TempDir As String
+ 
+    TempDir = Space$(256)
+    RetVal = GetTempPath(Len(TempDir), TempDir)
+ 
+    If RetVal <> 0 Then
+        getTempFolder = Left$(TempDir, RetVal)
     End If
     
 End Function
 
-Private Function TrimNull(ByVal strString As String) As String
+Friend Sub ShellExecute(FileName As String)
 
-    'Declarations
-    Dim intPos As Integer
+    Call ShellExecuteA(Application.hWndAccessApp, "open", FileName, "", CurDir$, SW_SHOW)
 
-    intPos = VBA.InStr(strString, vbNullChar)
-    If intPos > 0 Then
-        TrimNull = VBA.Left$(strString, intPos - 1)
-    Else
-        TrimNull = strString
-    End If
+End Sub
 
-End Function
-
-Friend Function getOrderString(ByVal ThisOrder As ptOrder) As String
-
-    Select Case ThisOrder
-        Case ptOrder.key_a_to_z
-            getOrderString = "'key_a_to_z'"
-        Case ptOrder.value_a_to_z
-            getOrderString = "'value_a_to_z'"
-        Case ptOrder.value_z_to_a
-            getOrderString = "'value_z_to_a'"
-        Case Else
-            getOrderString = "'key_a_to_z'"
-    End Select
-
-End Function
 
