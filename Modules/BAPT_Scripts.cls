@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.17.09  published: 23.01.2022                                                      #
+'# Version 1.18.09  published: 19.02.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -47,10 +47,12 @@ End Property
 '### Instanzing
 
 Private Sub Class_Initialize()
+
     Set m_PivotJS = New BAPT_PivotJS
     Set m_PivotCSS = New BAPT_PivotCSS
     Set m_JQueryJS = New BAPT_JQueryJS
     Set m_JQueryUI = New BAPT_JQueryUI
+    
 End Sub
 
 Private Sub Class_Terminate()

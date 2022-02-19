@@ -10,7 +10,7 @@ Attribute VB_Exposed = False
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.17.09  published: 23.01.2022                                                      #
+'# Version 1.18.09  published: 19.02.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -22,23 +22,15 @@ Option Explicit
 #If VBA7 Then
     Private Declare PtrSafe Function GetTempPath Lib "kernel32" Alias "GetTempPathA" _
         (ByVal nBufferLength As LongPtr, ByVal lpbuffer As String) As Long
-#Else
-    Private Declare Function GetTempPath Lib "kernel32" Alias "GetTempPathA" _
-        (ByVal nBufferLength As Long, ByVal lpbuffer As String) As Long
-#End If
-
-#If VBA7 Then
     Private Declare PtrSafe Function MakeSureDirectoryPathExists Lib "imagehlp.dll" (ByVal lpPath As String) As Long
-#Else
-    Private Declare Function MakeSureDirectoryPathExists Lib "imagehlp.dll" (ByVal lpPath As String) As Long
-#End If
-
-#If VBA7 Then
     Private Declare PtrSafe Function ShellExecuteA Lib "Shell32" _
         (ByVal hWnd As LongPtr, ByVal lpOperation As String, _
          ByVal lpFile As String, ByVal lpParameters As String, _
          ByVal lpDirectory As String, ByVal nShowCmd As eShowCmd) As Long
 #Else
+    Private Declare Function GetTempPath Lib "kernel32" Alias "GetTempPathA" _
+        (ByVal nBufferLength As Long, ByVal lpbuffer As String) As Long
+    Private Declare Function MakeSureDirectoryPathExists Lib "imagehlp.dll" (ByVal lpPath As String) As Long
     Private Declare Function ShellExecuteA Lib "Shell32" _
         (ByVal hWnd As Long, ByVal lpOperation As String, _
          ByVal lpFile As String, ByVal lpParameters As String, _
@@ -155,9 +147,9 @@ Friend Function getTempFolder() As String
     
 End Function
 
-Friend Sub ShellExecute(FileName As String)
+Friend Sub ShellExecute(ByVal FileName As String)
 
-    Call ShellExecuteA(Application.hWndAccessApp, "open", FileName, "", CurDir$, SW_SHOW)
+    Call ShellExecuteA(Application.hWndAccessApp, "open", FileName, vbNullString, CurDir$, SW_SHOW)
 
 End Sub
 

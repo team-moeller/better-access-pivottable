@@ -10,7 +10,7 @@ Attribute VB_Exposed = False
 '###############################################################################################
 '# Copyright (C) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.17.09  published: 23.01.2022                                                      #
+'# Version 1.18.09  published: 19.02.2022                                                      #
 '###############################################################################################
 
 Option Compare Database

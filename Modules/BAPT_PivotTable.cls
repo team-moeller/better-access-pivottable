@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.17.09  published: 23.01.2022                                                      #
+'# Version 1.18.09  published: 19.02.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -53,21 +53,21 @@ Private m_Columns As BAPT_Columns
     
 '### Properties
 
-Public Property Set Control(This_Control As WebBrowserControl)
+Public Property Set Control(ByRef This_Control As WebBrowserControl)
     Set m_Control = This_Control
 End Property
 Public Property Get Control() As WebBrowserControl
     Set Control = m_Control
 End Property
 
-Public Property Let IsInteractive(newValue As Boolean)
+Public Property Let IsInteractive(ByVal newValue As Boolean)
     m_IsInteractive = newValue
 End Property
 Public Property Get IsInteractive() As Boolean
     IsInteractive = m_IsInteractive
 End Property
 
-Public Property Let DataSourceObjectName(newValue As String)
+Public Property Let DataSourceObjectName(ByVal newValue As String)
     m_DataSourceObjectName = newValue
 End Property
 Public Property Get DataSourceObjectName() As String
@@ -81,21 +81,21 @@ Public Property Get SaveHtmlFileForDebugging() As Boolean
     SaveHtmlFileForDebugging = m_SaveHtmlFileForDebugging
 End Property
 
-Public Property Let Aggregator(newValue As String)
+Public Property Let Aggregator(ByVal newValue As String)
     m_Aggregator = "'" & newValue & "'"
 End Property
 Public Property Get Aggregator() As String
     Aggregator = m_Aggregator
 End Property
 
-Public Property Let AggregatorField(newValue As String)
+Public Property Let AggregatorField(ByVal newValue As String)
     m_AggregatorField = "'" & newValue & "'"
 End Property
 Public Property Get AggregatorField() As String
     AggregatorField = m_AggregatorField
 End Property
 
-Public Property Let RendererName(newValue As String)
+Public Property Let RendererName(ByVal newValue As String)
     m_RendererName = "'" & newValue & "'"
 End Property
 Public Property Get RendererName() As String

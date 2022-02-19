@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.17.09  published: 23.01.2022                                                      #
+'# Version 1.18.09  published: 19.02.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -26,7 +26,7 @@ Private m_Order As ptOrder
 
 '### Properties
 
-Public Property Let Fields(newValue As String)
+Public Property Let Fields(ByVal newValue As String)
     newValue = "'" & newValue & "'"
     newValue = Replace(newValue, ",", "','")
     newValue = Replace(newValue, ",' ", ",'")
@@ -36,14 +36,14 @@ Public Property Get Fields() As String
     Fields = m_Fields
 End Property
 
-Public Property Let ShowTotals(newValue As Boolean)
+Public Property Let ShowTotals(ByVal newValue As Boolean)
     m_ShowTotals = newValue
 End Property
 Public Property Get ShowTotals() As Boolean
     ShowTotals = m_ShowTotals
 End Property
 
-Public Property Let Order(newValue As ptOrder)
+Public Property Let Order(ByVal newValue As ptOrder)
     m_Order = newValue
 End Property
 Public Property Get Order() As ptOrder

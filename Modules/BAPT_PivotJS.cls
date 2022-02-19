@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.17.09  published: 23.01.2022                                                      #
+'# Version 1.18.09  published: 19.02.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -26,22 +26,22 @@ Private m_PathFilename As String
 
 ' ### Properties
 
-Public Property Let Source(ByVal This_Source As ptScriptSource)
-    m_Source = This_Source
+Public Property Let Source(ByVal newValue As ptScriptSource)
+    m_Source = newValue
 End Property
 Public Property Get Source() As ptScriptSource
     Source = m_Source
 End Property
 
-Public Property Let CDN(ByVal This_CDN As String)
-    m_CDN = This_CDN
+Public Property Let CDN(ByVal newValue As String)
+    m_CDN = newValue
 End Property
 Public Property Get CDN() As String
     CDN = m_CDN
 End Property
 
-Public Property Let PathFilename(ByVal This_PathFilename As String)
-    m_PathFilename = This_PathFilename
+Public Property Let PathFilename(ByVal newValue As String)
+    m_PathFilename = newValue
 End Property
 Public Property Get PathFilename() As String
     PathFilename = m_PathFilename
@@ -51,9 +51,11 @@ End Property
 '### Instanzing
 
 Private Sub Class_Initialize()
+
     Me.Source = ptScriptSource.CDN
     Me.CDN = "https://cdnjs.cloudflare.com/ajax/libs/pivottable/2.23.0/pivot.min.js"
     Me.PathFilename = CurrentProject.Path & "\pivot.min.js"
+    
 End Sub
 
 Private Sub Class_Terminate()
