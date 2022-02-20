@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.18.09  published: 19.02.2022                                                      #
+'# Version 1.19.05  published: 20.02.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -166,138 +166,24 @@ Private Sub CreateHtmlFile()
 
     'Declarations
     Dim objFS As Object
-    Dim strHtml As New BAPT_StringBuilder
-    
-    With strHtml
-        .AddLine getHead
-        .AddLine getData
-        .AddLine getScript
-        .AddLine getFoot
+    Dim strHtml As String
+ 
+    With BAPT.Generator(Me)
+        strHtml = .GenerateHTML
     End With
  
     If m_SaveHtmlFileForDebugging = True Then
-        Call saveHtmlFile(strHtml.ToString)
+        Call saveHtmlFile(strHtml)
     End If
         
     Set objFS = CreateObject("ADODB.Stream")
     objFS.Charset = "utf-8"
     objFS.Open
-    objFS.WriteText strHtml.ToString
+    objFS.WriteText strHtml
     objFS.SaveToFile getHTMLFileName, 2   '2: Create Or Update
     objFS.Close
       
 End Sub
-
-Private Function getHead() As String
-
-    'Declarations
-    Dim strText As New BAPT_StringBuilder
-    
-    With strText
-        .AddLine "<!DOCTYPE html>"
-        .AddLine "<!-- saved from url=(0014)about:internet -->"
-        .AddLine "<!-- saved from url=(0016)http://localhost -->"
-        .AddLine "<html>"
-        .AddLine "<head>"
-        .AddLine "    <meta charset='utf-8'>"
-        .AddLine "    <meta http-equiv='X-UA-Compatible' content='IE=Edge'/>"
-        .AddLine "    <title>PivotTable</title>"
-        .AddLine "    <style>body{margin:0;padding:0;}</style>"
-        .AddLine "    <link rel='stylesheet' href=" & BAPT.Scripts.PivotCSS.getLocation & ">"
-        .AddLine "    <script src=" & BAPT.Scripts.JQueryJS.getLocation & "></script>"
-        .AddLine "    <script src=" & BAPT.Scripts.JQueryUI.getLocation & "></script>"
-        .AddLine "    <script src=" & BAPT.Scripts.PivotJS.getLocation & "></script>"
-        If Me.Columns.ShowTotals = False Then
-            .AddLine Me.Columns.GetCssToHideTotals
-        End If
-        If Me.Rows.ShowTotals = False Then
-            .AddLine Me.Rows.GetCssToHideTotals
-        End If
-        .AddLine "</head>"
-        .AddLine "<body>"
-        .AddLine "    <div id='output' style='margin: 30px;'></div>"
-    End With
-    
-    getHead = strText.ToString
-    
-End Function
-
-Private Function getData() As String
-
-    'Declarations
-    Dim db As DAO.Database
-    Dim rst As DAO.Recordset
-    Dim fld As DAO.Field
-    Dim strText As New BAPT_StringBuilder
-    Dim strLine As String
-    
-    Set db = CurrentDb
-    Set rst = db.OpenRecordset(Me.DataSourceObjectName)
-
-    With strText
-        .AddLine "    <script>"
-        .AddLine "    var data = ["
-        Do While Not rst.EOF
-            strLine = "                {"
-            For Each fld In rst.Fields
-                strLine = strLine & "'" & fld.Name & "': '" & rst(fld.Name) & "', "
-            Next fld
-            strLine = Left$(strLine, Len(strLine) - 2)
-            .AddLine strLine & "},"
-            rst.MoveNext
-        Loop
-        .CutTrailingComma
-        .AddLine "               ]"
-    End With
-    
-    getData = strText.ToString
-
-End Function
-
-Private Function getScript() As String
-
-    'Declarations
-    Dim strText As New BAPT_StringBuilder
-    
-    With strText
-        .AddLine "    $(function(){"
-        .AddLine "        $('#output').pivotUI("
-        .AddLine "            data,"
-        .AddLine "            {"
-        .AddLine "                rows: [" & Me.Rows.Fields & "],"
-        .AddLine "                rowOrder: " & BAPT.Helper.getOrderString(Me.Rows.Order) & ","
-        .AddLine "                cols: [" & Me.Columns.Fields & "],"
-        .AddLine "                colOrder: " & BAPT.Helper.getOrderString(Me.Columns.Order) & ","
-        .AddLine "                aggregatorName: " & Me.Aggregator & ","
-        .AddLine "                vals: [" & Me.AggregatorField & "],"
-        .AddLine "                rendererName: [" & Me.RendererName & "],"
-        If Me.IsInteractive = False Then
-            .AddLine "                showUI: false,"
-        End If
-        .CutTrailingComma
-        .AddLine "            }"
-    End With
-    
-    getScript = strText.ToString
-
-End Function
-
-Private Function getFoot() As String
-
-    'Declarations
-    Dim strText As New BAPT_StringBuilder
-    
-    With strText
-        .AddLine "        );"
-        .AddLine "     });"
-        .AddLine "    </script>"
-        .AddLine "</body>"
-        .AddLine "</html>"
-    End With
-    
-    getFoot = strText.ToString
-    
-End Function
 
 
 '### Private Helper Methods
