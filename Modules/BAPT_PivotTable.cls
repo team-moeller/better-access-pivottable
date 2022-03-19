@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.19.05  published: 20.02.2022                                                      #
+'# Version 1.20.07  published: 19.03.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -30,6 +30,11 @@ Public Enum ptOrder
     value_z_to_a = 3
 End Enum
 
+Public Enum chDisplayIn
+    chWebBrowserControl = 1
+    chSystemBrowser = 2
+End Enum
+
 
 '### Constants
 
@@ -46,6 +51,7 @@ Private m_SaveHtmlFileForDebugging As Boolean
 Private m_Aggregator As String
 Private m_AggregatorField As String
 Private m_RendererName As String
+Private m_DisplayIn As chDisplayIn
 
 Private m_Rows As BAPT_Rows
 Private m_Columns As BAPT_Columns
@@ -55,6 +61,7 @@ Private m_Columns As BAPT_Columns
 
 Public Property Set Control(ByRef This_Control As WebBrowserControl)
     Set m_Control = This_Control
+    m_DisplayIn = chWebBrowserControl
 End Property
 Public Property Get Control() As WebBrowserControl
     Set Control = m_Control
@@ -102,6 +109,13 @@ Public Property Get RendererName() As String
     RendererName = m_RendererName
 End Property
 
+Public Property Let DisplayIn(ByVal newValue As chDisplayIn)
+    m_DisplayIn = newValue
+End Property
+Public Property Get DisplayIn() As chDisplayIn
+    DisplayIn = m_DisplayIn
+End Property
+
 
 '### Object Properties
 
@@ -126,6 +140,7 @@ Private Sub Class_Initialize()
     Me.IsInteractive = True
     Me.Aggregator = "Count"
     Me.RendererName = "Table"
+    Me.DisplayIn = chWebBrowserControl
     
 End Sub
 
@@ -137,21 +152,20 @@ End Sub
 '### Public Methods
 
 Public Sub ShowPivot()
-    
+
     CreateHtmlFile
-        
-    Control.Object.Navigate getHTMLFileName
+    
+    Select Case Me.DisplayIn
+        Case chDisplayIn.chWebBrowserControl
+            Control.Object.Navigate getHTMLFileName
+        Case chDisplayIn.chSystemBrowser
+            BAPT.Helper.ShellExecute getHTMLFileName
+        Case Else
+            'Do nothing
+    End Select
     
 End Sub
-
-Public Sub ShowInBrowser()
     
-    CreateHtmlFile
-        
-    BAPT.Helper.ShellExecute getHTMLFileName
-    
-End Sub
-
     
 '### Initializer
 
