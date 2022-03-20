@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.20.07  published: 19.03.2022                                                      #
+'# Version 1.21.17  published: 20.03.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -32,19 +32,15 @@ End Enum
 
 Public Enum chDisplayIn
     chWebBrowserControl = 1
-    chSystemBrowser = 2
+    chWebBrowserActiveX = 2
+    chSystemBrowser = 3
 End Enum
-
-
-'### Constants
-
-Private Const HtmlFileName As String = "BetterAccessPivotTable_{}.html"
 
 
 '### Members
 
-Private WithEvents m_Control As WebBrowserControl
-Attribute m_Control.VB_VarHelpID = -1
+Private m_WebBrowserControl As Access.WebBrowserControl
+Private m_WebBrowserActiveX As SHDocVw.WebBrowser
 Private m_IsInteractive As Boolean
 Private m_DataSourceObjectName As String
 Private m_SaveHtmlFileForDebugging As Boolean
@@ -59,12 +55,30 @@ Private m_Columns As BAPT_Columns
     
 '### Properties
 
-Public Property Set Control(ByRef This_Control As WebBrowserControl)
-    Set m_Control = This_Control
+Public Property Set Control(ByVal New_Control As Object)
+    If TypeName(New_Control) = "WebBrowserControl" Then
+        Set Me.WebBrowserControl = New_Control
+    ElseIf TypeName(New_Control.Object) = "WebBrowser" Then
+        Set Me.WebBrowserActiveX = New_Control.Object
+    Else
+        Err.Raise vbObjectError, , "Type of control not supported!"
+    End If
+End Property
+
+Public Property Set WebBrowserControl(ByVal New_Control As Access.WebBrowserControl)
+    Set m_WebBrowserControl = New_Control
     m_DisplayIn = chWebBrowserControl
 End Property
-Public Property Get Control() As WebBrowserControl
-    Set Control = m_Control
+Public Property Get WebBrowserControl() As WebBrowserControl
+    Set WebBrowserControl = m_WebBrowserControl
+End Property
+
+Public Property Set WebBrowserActiveX(ByVal New_Control As SHDocVw.WebBrowser)
+    Set m_WebBrowserActiveX = New_Control
+    m_DisplayIn = chWebBrowserActiveX
+End Property
+Public Property Get WebBrowserActiveX() As SHDocVw.WebBrowser
+    Set WebBrowserActiveX = m_WebBrowserActiveX
 End Property
 
 Public Property Let IsInteractive(ByVal newValue As Boolean)
@@ -152,12 +166,14 @@ End Sub
 '### Public Methods
 
 Public Sub ShowPivot()
-
+    
     CreateHtmlFile
     
     Select Case Me.DisplayIn
         Case chDisplayIn.chWebBrowserControl
-            Control.Object.Navigate getHTMLFileName
+            Me.WebBrowserControl.Object.Navigate getHTMLFileName
+        Case chDisplayIn.chWebBrowserActiveX
+            Me.WebBrowserActiveX.Navigate getHTMLFileName
         Case chDisplayIn.chSystemBrowser
             BAPT.Helper.ShellExecute getHTMLFileName
         Case Else
@@ -169,7 +185,7 @@ End Sub
     
 '### Initializer
 
-Public Sub Init(Optional ByVal TheControl As WebBrowserControl)
+Public Sub Init(Optional ByVal TheControl As Object)
       Set Me.Control = TheControl
 End Sub
 
@@ -179,56 +195,51 @@ End Sub
 Private Sub CreateHtmlFile()
 
     'Declarations
-    Dim objFS As Object
-    Dim strHtml As String
- 
+    Dim strHTML As String
+    
     With BAPT.Generator(Me)
-        strHtml = .GenerateHTML
+        strHTML = .GenerateHTML
     End With
  
-    If m_SaveHtmlFileForDebugging = True Then
-        Call saveHtmlFile(strHtml)
+    If Me.SaveHtmlFileForDebugging = True Then
+        Call saveHtmlFile(CurrentProject.Path & "\", strHTML)
     End If
-        
-    Set objFS = CreateObject("ADODB.Stream")
-    objFS.Charset = "utf-8"
-    objFS.Open
-    objFS.WriteText strHtml
-    objFS.SaveToFile getHTMLFileName, 2   '2: Create Or Update
-    objFS.Close
-      
+    
+    Call saveHtmlFile(BAPT.Helper.getTempFolder, strHTML)
+    
 End Sub
 
 
 '### Private Helper Methods
 
-Private Sub saveHtmlFile(ByVal strContent As String)
+Private Sub saveHtmlFile(ByVal Folder As String, ByVal strHTML As String)
 
     'Declarations
-    Dim strPath As String
-    Dim strFilename As String
-    Dim f As Integer
-    Const HtmlFileName As String = "BetterAccessPivotTable_{}.html"
+    Dim objFS As Object
+    Dim FileName As String
+       
+    FileName = getHTMLFileName(Folder)
     
-    strPath = CurrentProject.Path & "\"
-    strFilename = Replace(HtmlFileName, "{}", m_Control.Name)
-    
-    f = FreeFile()
-    Open strPath & strFilename For Output As f
-    Print #f, strContent;
-    Close f
-    
+    Set objFS = CreateObject("ADODB.Stream")
+    objFS.Charset = "utf-8"
+    objFS.Open
+    objFS.WriteText strHTML
+    objFS.SaveToFile FileName, 2   '2: Create Or Update
+    objFS.Close
+     
 End Sub
 
-Private Function getHTMLFileName() As String
+Private Function getHTMLFileName(Optional Path As String = vbNullString) As String
     
     'Declarations
-    Dim strPath As String
     Dim strFilename As String
-    
-    strPath = BAPT.Helper.getTempFolder
-    strFilename = Replace(HtmlFileName, "{}", m_Control.Name)
+    Const HtmlFileName As String = "BetterAccessPivotTable_{}.html"
 
-    getHTMLFileName = strPath & strFilename
+    If Path = vbNullString Then
+        Path = BAPT.Helper.getTempFolder
+    End If
+    strFilename = Replace(HtmlFileName, "{}", ObjPtr(Me))
+
+    getHTMLFileName = Path & strFilename
     
 End Function
