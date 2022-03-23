@@ -10,7 +10,7 @@ Attribute VB_Exposed = False
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.22.04  published: 22.03.2022                                                      #
+'# Version 1.23.17  published: 23.03.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -48,7 +48,7 @@ Friend Function GenerateHTML() As String
 
     With strHTML
         .AddLine getHead
-        .AddLine getData
+        .AddLine Options.DataSource.getData
         .AddLine getScript
         .AddLine getFoot
     End With
@@ -91,38 +91,6 @@ Private Function getHead() As String
     
     getHead = strText.ToString
     
-End Function
-
-Private Function getData() As String
-
-    'Declarations
-    Dim db As DAO.Database
-    Dim rst As DAO.Recordset
-    Dim fld As DAO.Field
-    Dim strText As New BAPT_StringBuilder
-    Dim strLine As String
-    
-    Set db = CurrentDb
-    Set rst = db.OpenRecordset(Options.DataSourceObjectName)
-
-    With strText
-        .AddLine "    <script>"
-        .AddLine "    var data = ["
-        Do While Not rst.EOF
-            strLine = "                {"
-            For Each fld In rst.Fields
-                strLine = strLine & "'" & fld.Name & "': '" & rst(fld.Name) & "', "
-            Next fld
-            strLine = Left$(strLine, Len(strLine) - 2)
-            .AddLine strLine & "},"
-            rst.MoveNext
-        Loop
-        .CutTrailingComma
-        .AddLine "               ]"
-    End With
-    
-    getData = strText.ToString
-
 End Function
 
 Private Function getScript() As String

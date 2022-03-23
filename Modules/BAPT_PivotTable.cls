@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.22.04  published: 22.03.2022                                                      #
+'# Version 1.23.17  published: 23.03.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -42,7 +42,6 @@ End Enum
 Private m_WebBrowserControl As Access.WebBrowserControl
 Private m_WebBrowserActiveX As SHDocVw.WebBrowser
 Private m_IsInteractive As Boolean
-Private m_DataSourceObjectName As String
 Private m_SaveHtmlFileForDebugging As Boolean
 Private m_Aggregator As String
 Private m_AggregatorField As String
@@ -51,6 +50,7 @@ Private m_DisplayIn As chDisplayIn
 
 Private m_Rows As BAPT_Rows
 Private m_Columns As BAPT_Columns
+Private m_DataSource As BAPT_DataSource
     
     
 '### Properties
@@ -86,13 +86,6 @@ Public Property Let IsInteractive(ByVal newValue As Boolean)
 End Property
 Public Property Get IsInteractive() As Boolean
     IsInteractive = m_IsInteractive
-End Property
-
-Public Property Let DataSourceObjectName(ByVal newValue As String)
-    m_DataSourceObjectName = newValue
-End Property
-Public Property Get DataSourceObjectName() As String
-    DataSourceObjectName = m_DataSourceObjectName
 End Property
 
 Public Property Let SaveHtmlFileForDebugging(ByVal This_SaveHtmlFileForDebugging As Boolean)
@@ -141,6 +134,10 @@ Public Property Get Columns() As BAPT_Columns
     Set Columns = m_Columns
 End Property
 
+Public Property Get DataSource() As BAPT_DataSource
+    Set DataSource = m_DataSource
+End Property
+
 
 '### Instanzing
 
@@ -149,6 +146,7 @@ Private Sub Class_Initialize()
     'Create sub classes
     Set m_Rows = New BAPT_Rows
     Set m_Columns = New BAPT_Columns
+    Set m_DataSource = New BAPT_DataSource
     
     'Set default values
     Me.IsInteractive = True
