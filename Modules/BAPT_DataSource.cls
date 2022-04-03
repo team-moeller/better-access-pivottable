@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.23.17  published: 23.03.2022                                                      #
+'# Version 1.24.05  published: 03.04.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -79,6 +79,15 @@ Friend Sub Init(Optional ByVal DataSourceType As chDataSourceType = dstDemo, _
 End Sub
 
 
+' ### Methods
+
+Public Sub UseDemoData()
+
+    m_Type = dstDemo
+    
+End Sub
+
+
 ' ### Generator Function
 
 Friend Function getData() As String
@@ -99,10 +108,14 @@ On Error GoTo Handle_Error
         Case dstRecordset:
             Set rst = Me.Recordset
         Case dstDemo:
-            ' TODO
+            'Do Nothing
     End Select
     
-    getData = getDataFromRS(rst)
+    If m_Type = dstDemo Then
+        getData = getDemoData
+    Else
+        getData = getDataFromRS(rst)
+    End If
     
 Exit_Here:
     If Not (rst Is Nothing) Then
@@ -146,6 +159,29 @@ Private Function getDataFromRS(ByVal rst As Object) As String
     End With
     
     getDataFromRS = strText.ToString
+    
+End Function
+
+Private Function getDemoData() As String
+
+    'Declarations
+    Dim strText As New BAPT_StringBuilder
+    Dim strLine As String
+
+    With strText
+        .AddLine "    <script>"
+        .AddLine "    var data = ["
+        .AddLine "                {'State/Province': 'NV', 'Salesperson': 'Anne Hellung-Larsen', 'ExtendedPrice': '1400'},"
+        .AddLine "                {'State/Province': 'NV', 'Salesperson': 'Anne Hellung-Larsen', 'ExtendedPrice': '1200'},"
+        .AddLine "                {'State/Province': 'NV', 'Salesperson': 'Anne Hellung-Larsen', 'ExtendedPrice': '100'},"
+        .AddLine "                {'State/Province': 'NY', 'Salesperson': 'Mariya Sergienko', 'ExtendedPrice': '100'},"
+        .AddLine "                {'State/Province': 'NY', 'Salesperson': 'Mariya Sergienko', 'ExtendedPrice': '400'},"
+        .AddLine "                {'State/Province': 'NY', 'Salesperson': 'Mariya Sergienko', 'ExtendedPrice': '1400'},"
+        .CutTrailingComma
+        .AddLine "               ]"
+    End With
+    
+    getDemoData = strText.ToString
     
 End Function
 
