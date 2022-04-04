@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.24.05  published: 03.04.2022                                                      #
+'# Version 1.25.10  published: 04.04.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -51,6 +51,7 @@ Private m_DisplayIn As chDisplayIn
 Private m_Rows As BAPT_Rows
 Private m_Columns As BAPT_Columns
 Private m_DataSource As BAPT_DataSource
+Private m_Localization As BAPT_Localization
     
     
 '### Properties
@@ -138,6 +139,10 @@ Public Property Get DataSource() As BAPT_DataSource
     Set DataSource = m_DataSource
 End Property
 
+Public Property Get Localization() As BAPT_Localization
+    Set Localization = m_Localization
+End Property
+
 
 '### Instanzing
 
@@ -147,6 +152,7 @@ Private Sub Class_Initialize()
     Set m_Rows = New BAPT_Rows
     Set m_Columns = New BAPT_Columns
     Set m_DataSource = New BAPT_DataSource
+    Set m_Localization = New BAPT_Localization
     
     'Set default values
     Me.IsInteractive = True

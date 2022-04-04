@@ -2,13 +2,13 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "BAPT_PivotJS"
+Attribute VB_Name = "BAPT_Localization"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 '###############################################################################################
-'# Copyright (c) 2021, 2022 Thomas Möller                                                      #
+'# Copyright (C) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
 '# Version 1.25.10  published: 04.04.2022                                                      #
 '###############################################################################################
@@ -17,14 +17,23 @@ Option Compare Database
 Option Explicit
 
 
+
 '### Members
 
+Private m_Locale As String
 Private m_Source As ptScriptSource
 Private m_CDN As String
 Private m_PathFilename As String
 
 
 ' ### Properties
+
+Public Property Let Locale(ByVal newValue As String)
+    m_Locale = newValue
+End Property
+Public Property Get Locale() As String
+    Locale = m_Locale
+End Property
 
 Public Property Let Source(ByVal newValue As ptScriptSource)
     m_Source = newValue
@@ -52,9 +61,8 @@ End Property
 
 Private Sub Class_Initialize()
 
+    Me.Locale = "en"
     Me.Source = ptScriptSource.CDN
-    Me.CDN = "https://cdnjs.cloudflare.com/ajax/libs/pivottable/2.23.0/pivot.min.js"
-    Me.PathFilename = CurrentProject.Path & "\pivot.min.js"
     
 End Sub
 
@@ -64,12 +72,6 @@ End Sub
 
 
 ' ### Public Functions
-
-Public Function SaveToDisk() As Boolean
-
-    SaveToDisk = BAPT.Helper.SaveFileToDisk("pivot.min.js", CurrentProject.Path)
-    
-End Function
 
 
 ' ### Generator Function
@@ -91,5 +93,4 @@ Friend Function getLocation() As String
     getLocation = strText
 
 End Function
-
 

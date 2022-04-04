@@ -10,7 +10,7 @@ Attribute VB_Exposed = False
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.24.05  published: 03.04.2022                                                      #
+'# Version 1.25.10  published: 04.04.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -78,6 +78,9 @@ Private Function getHead() As String
         .AddLine "    <script src=" & BAPT.Scripts.JQueryJS.getLocation & "></script>"
         .AddLine "    <script src=" & BAPT.Scripts.JQueryUI.getLocation & "></script>"
         .AddLine "    <script src=" & BAPT.Scripts.PivotJS.getLocation & "></script>"
+        If Options.Localization.Locale <> "en" Then
+            .AddLine "    <script src=" & Options.Localization.getLocation & "></script>"
+        End If
         If Options.Columns.ShowTotals = False Then
             .AddLine Options.Columns.GetCssToHideTotals
         End If
@@ -114,7 +117,12 @@ Private Function getScript() As String
             .AddLine "                showUI: false,"
         End If
         .CutTrailingComma
-        .AddLine "            }"
+        .AddLine "            },"
+        If Options.Localization.Locale <> "en" Then
+            .AddLine "            false,"
+            .AddLine "            '" & Options.Localization.Locale & "'"
+        End If
+        .CutTrailingComma
     End With
     
     getScript = strText.ToString

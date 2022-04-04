@@ -10,7 +10,7 @@ Attribute VB_Exposed = False
 '###############################################################################################
 '# Copyright (C) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.24.05  published: 03.04.2022                                                      #
+'# Version 1.25.10  published: 04.04.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -24,7 +24,11 @@ Public Sub Add(ByVal TheString As String)
 End Sub
 
 Public Sub AddLine(ByVal TheString As String)
-    m_String = m_String & TheString & vbCrLf
+    If m_String = vbNullString Then
+        m_String = TheString
+    Else
+        m_String = m_String & vbCrLf & TheString
+    End If
 End Sub
 
 Public Sub CutTrailingComma()
