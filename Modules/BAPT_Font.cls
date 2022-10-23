@@ -67,24 +67,24 @@ End Property
 ' ### Functions
 
 Friend Property Get ToCSS() As String
-    Dim str As New BAPT_StringBuilder
+    Dim strText As New BAPT_StringBuilder
     
     If Color <> vbNullString Then
-        str.AddLine "color: " & Color & ";"
+        strText.AddLine "color: " & Color & ";"
     End If
     If Family <> vbNullString Then
-        str.AddLine "font-family: " & Family & ";"
+        strText.AddLine "font-family: " & Family & ";"
     End If
     If Size > 0 Then
-        str.AddLine "font-size: " & Size & "px;"
+        strText.AddLine "font-size: " & Size & "px;"
     End If
     If IsItalic Then
-        str.AddLine "font-style: italic;"
+        strText.AddLine "font-style: italic;"
     End If
     If IsBold Then
-        str.AddLine "font-weight: bold;"
+        strText.AddLine "font-weight: bold;"
     End If
     
-    ToCSS = str.ToString
+    ToCSS = strText.ToString
 
 End Property

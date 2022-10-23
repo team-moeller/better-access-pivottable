@@ -11,29 +11,36 @@ Option Compare Database
 Option Explicit
 
 '### Members
+
+Private m_Background As BAPT_Background
 Private m_Font As BAPT_Font
 
 '### Properties
+
+Public Property Get Background() As BAPT_Background
+    Set Background = m_Background
+End Property
+
 Public Property Get Font() As BAPT_Font
     Set Font = m_Font
 End Property
 
 '### Instanzing
 
-
 Private Sub Class_Initialize()
     
     'Create sub classes
+    Set m_Background = New BAPT_Background
     Set m_Font = New BAPT_Font
 End Sub
-
 
 '### Generator Function
 
 Friend Function ToCSS() As String
-    Dim str As New BAPT_StringBuilder
+    Dim strText As New BAPT_StringBuilder
     
-    str.AddLine Font.ToCSS
+    strText.AddLine Background.ToCSS
+    strText.AddLine Font.ToCSS
     
-    ToCSS = str.ToString
+    ToCSS = strText.ToString
 End Function

@@ -103,21 +103,21 @@ End Sub
 '### Generator Function
 
 Friend Function ToCSS() As String
-    Dim str As New BAPT_StringBuilder
+    Dim strText As New BAPT_StringBuilder
     
-    str.AddLine ".pvtUi { " & Default.ToCSS & " }"
+    strText.AddLine ".pvtUi { " & Default.ToCSS & " }"
     
-    str.AddLine "table.pvtTable { " & Table.ToCSS & " }"
-    str.AddLine "table.pvtTable .pvtVal { " & Val.ToCSS & " }"
-    str.AddLine "table.pvtTable .pvtTotal { " & Total.ToCSS & " }"
-    str.AddLine "table.pvtTable .pvtGrandTotal { " & GrandTotal.ToCSS & " }"
+    strText.AddLine "table.pvtTable { " & Table.ToCSS & " }"
+    strText.AddLine "table.pvtTable .pvtVal { " & Val.ToCSS & " }"
+    strText.AddLine "table.pvtTable .pvtTotal { " & Total.ToCSS & " }"
+    strText.AddLine "table.pvtTable .pvtGrandTotal { " & GrandTotal.ToCSS & " }"
     
-    str.AddLine "table.pvtTable .pvtAxisLabel { " & AxisLabel.ToCSS & " }"
-    str.AddLine "table.pvtTable .pvtRowLabel  { " & RowLabel.ToCSS & " }"
-    str.AddLine "table.pvtTable .pvtColLabel { " & ColLabel.ToCSS & " }"
-    str.AddLine "table.pvtTable .pvtTotalLabel { " & TotalLabel.ToCSS & " }"
+    strText.AddLine "table.pvtTable .pvtAxisLabel { " & AxisLabel.ToCSS & " }"
+    strText.AddLine "table.pvtTable .pvtRowLabel  { " & RowLabel.ToCSS & " }"
+    strText.AddLine "table.pvtTable .pvtColLabel { " & ColLabel.ToCSS & " }"
+    strText.AddLine "table.pvtTable .pvtTotalLabel { " & TotalLabel.ToCSS & " }"
     
-    str.AddLine "table.pvtTable .pvtAttr { " & Attr.ToCSS & " }"
+    strText.AddLine "table.pvtTable .pvtAttr { " & Attr.ToCSS & " }"
     
-    ToCSS = str.ToString
+    ToCSS = strText.ToString
 End Function
