@@ -66,28 +66,25 @@ End Property
 
 ' ### Functions
 
-Friend Property Get SectionIsNeeded() As Boolean
-
-    SectionIsNeeded = (Family <> vbNullString) Or (Size > 0) Or (IsBold = True) Or (IsItalic = True)
-    
-End Property
-
 Friend Property Get ToCSS() As String
     Dim str As New BAPT_StringBuilder
     
-    If SectionIsNeeded Then
-        If Family <> vbNullString Then
-            str.AddLine "font-family: " & Family & ";"
-        End If
-        If Size > 0 Then
-            str.AddLine "font-size: " & Size & "px;"
-        End If
-        If IsItalic Then
-            str.AddLine "font-style: italic;"
-        End If
-        If IsBold Then
-            str.AddLine "font-weight: bold;"
-        End If
+    If Color <> vbNullString Then
+        str.AddLine "color: " & Color & ";"
     End If
+    If Family <> vbNullString Then
+        str.AddLine "font-family: " & Family & ";"
+    End If
+    If Size > 0 Then
+        str.AddLine "font-size: " & Size & "px;"
+    End If
+    If IsItalic Then
+        str.AddLine "font-style: italic;"
+    End If
+    If IsBold Then
+        str.AddLine "font-weight: bold;"
+    End If
+    
     ToCSS = str.ToString
+
 End Property

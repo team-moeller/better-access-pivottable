@@ -12,19 +12,27 @@ Option Explicit
 
 '### Members
 
+Private m_Default As BAPT_Style
+
 Private m_Table As BAPT_Style
 
 Private m_Val As BAPT_Style
 Private m_Total As BAPT_Style
+Private m_GrandTotal As BAPT_Style
 
 Private m_AxisLabel As BAPT_Style
 Private m_RowLabel As BAPT_Style
 Private m_ColLabel As BAPT_Style
+Private m_TotalLabel As BAPT_Style
 
 Private m_Attr As BAPT_Style
 
 
 '### Properties
+
+Public Property Get Default() As BAPT_Style
+    Set Default = m_Default
+End Property
 
 Public Property Get Table() As BAPT_Style
     Set Table = m_Table
@@ -36,6 +44,10 @@ End Property
 
 Public Property Get Total() As BAPT_Style
     Set Total = m_Total
+End Property
+
+Public Property Get GrandTotal() As BAPT_Style
+    Set GrandTotal = m_GrandTotal
 End Property
 
 Public Property Get AxisLabel() As BAPT_Style
@@ -50,6 +62,10 @@ Public Property Get ColLabel() As BAPT_Style
     Set ColLabel = m_ColLabel
 End Property
 
+Public Property Get TotalLabel() As BAPT_Style
+    Set TotalLabel = m_TotalLabel
+End Property
+
 Public Property Get Attr() As BAPT_Style
     Set Attr = m_Attr
 End Property
@@ -59,12 +75,18 @@ End Property
 Private Sub Class_Initialize()
     
     'Create sub classes
+    Set m_Default = New BAPT_Style
+    
     Set m_Table = New BAPT_Style
     Set m_Val = New BAPT_Style
     Set m_Total = New BAPT_Style
+    Set m_GrandTotal = New BAPT_Style
+    
     Set m_AxisLabel = New BAPT_Style
     Set m_RowLabel = New BAPT_Style
     Set m_ColLabel = New BAPT_Style
+    Set m_TotalLabel = New BAPT_Style
+    
     Set m_Attr = New BAPT_Style
     
     'Set default values
@@ -83,13 +105,19 @@ End Sub
 Friend Function ToCSS() As String
     Dim str As New BAPT_StringBuilder
     
-    str.AddLine ".pvtTable { " & Table.ToCSS & " }"
-    str.AddLine ".pvtVal { " & Val.ToCSS & " }"
-    str.AddLine ".pvtTotal { " & Total.ToCSS & " }"
-    str.AddLine ".pvtAxisLabel { " & AxisLabel.ToCSS & " }"
-    str.AddLine ".pvtRowLabel  { " & RowLabel.ToCSS & " }"
-    str.AddLine ".pvtColLabel { " & ColLabel.ToCSS & " }"
-    str.AddLine ".pvtAttr { " & Attr.ToCSS & " }"
+    str.AddLine ".pvtUi { " & Default.ToCSS & " }"
+    
+    str.AddLine "table.pvtTable { " & Table.ToCSS & " }"
+    str.AddLine "table.pvtTable .pvtVal { " & Val.ToCSS & " }"
+    str.AddLine "table.pvtTable .pvtTotal { " & Total.ToCSS & " }"
+    str.AddLine "table.pvtTable .pvtGrandTotal { " & GrandTotal.ToCSS & " }"
+    
+    str.AddLine "table.pvtTable .pvtAxisLabel { " & AxisLabel.ToCSS & " }"
+    str.AddLine "table.pvtTable .pvtRowLabel  { " & RowLabel.ToCSS & " }"
+    str.AddLine "table.pvtTable .pvtColLabel { " & ColLabel.ToCSS & " }"
+    str.AddLine "table.pvtTable .pvtTotalLabel { " & TotalLabel.ToCSS & " }"
+    
+    str.AddLine "table.pvtTable .pvtAttr { " & Attr.ToCSS & " }"
     
     ToCSS = str.ToString
 End Function
