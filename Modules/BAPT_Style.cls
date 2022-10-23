@@ -39,8 +39,8 @@ End Sub
 Friend Function ToCSS() As String
     Dim strText As New BAPT_StringBuilder
     
-    strText.AddLine Background.ToCSS
-    strText.AddLine Font.ToCSS
+    strText.Add Background.ToCSS
+    strText.Add Font.ToCSS
     
     ToCSS = strText.ToString
 End Function

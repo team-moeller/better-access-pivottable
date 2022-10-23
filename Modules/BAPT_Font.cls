@@ -70,19 +70,19 @@ Friend Property Get ToCSS() As String
     Dim strText As New BAPT_StringBuilder
     
     If Color <> vbNullString Then
-        strText.AddLine "color: " & Color & ";"
+        strText.Add "color: " & Color & ";"
     End If
     If Family <> vbNullString Then
-        strText.AddLine "font-family: " & Family & ";"
+        strText.Add "font-family: " & Family & ";"
     End If
     If Size > 0 Then
-        strText.AddLine "font-size: " & Size & "px;"
+        strText.Add "font-size: " & Size & "px;"
     End If
     If IsItalic Then
-        strText.AddLine "font-style: italic;"
+        strText.Add "font-style: italic;"
     End If
     If IsBold Then
-        strText.AddLine "font-weight: bold;"
+        strText.Add "font-weight: bold;"
     End If
     
     ToCSS = strText.ToString
