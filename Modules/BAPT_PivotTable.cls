@@ -52,6 +52,7 @@ Private m_Rows As BAPT_Rows
 Private m_Columns As BAPT_Columns
 Private m_DataSource As BAPT_DataSource
 Private m_Localization As BAPT_Localization
+Private m_Styles As BAPT_Styles
     
     
 '### Properties
@@ -143,6 +144,10 @@ Public Property Get Localization() As BAPT_Localization
     Set Localization = m_Localization
 End Property
 
+Public Property Get Styles() As BAPT_Styles
+    Set Styles = m_Styles
+End Property
+
 
 '### Instanzing
 
@@ -153,6 +158,7 @@ Private Sub Class_Initialize()
     Set m_Columns = New BAPT_Columns
     Set m_DataSource = New BAPT_DataSource
     Set m_Localization = New BAPT_Localization
+    Set m_Styles = New BAPT_Styles
     
     'Set default values
     Me.IsInteractive = True

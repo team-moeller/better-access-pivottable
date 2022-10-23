@@ -143,7 +143,6 @@ Private Function getDataFromRS(ByVal rst As Object) As String
     Dim strLine As String
 
     With strText
-        .AddLine "    <script>"
         .AddLine "    var data = ["
         Do While Not rst.EOF
             strLine = "                {"
@@ -169,7 +168,6 @@ Private Function getDemoData() As String
     Dim strLine As String
 
     With strText
-        .AddLine "    <script>"
         .AddLine "    var data = ["
         .AddLine "                {'State/Province': 'NV', 'Salesperson': 'Anne Hellung-Larsen', 'ExtendedPrice': '1400'},"
         .AddLine "                {'State/Province': 'NV', 'Salesperson': 'Anne Hellung-Larsen', 'ExtendedPrice': '1200'},"
