@@ -48,8 +48,8 @@ Friend Function GenerateHTML() As String
 
     With strHTML
         .AddLine getHead
-        .AddLine Options.DataSource.getData
-        .AddLine getScript
+        .AddLine getCSS
+        .AddLine getBody
         .AddLine getFoot
     End With
     GenerateHTML = strHTML.ToString()
@@ -88,11 +88,43 @@ Private Function getHead() As String
             .AddLine Options.Rows.GetCssToHideTotals
         End If
         .AddLine "</head>"
-        .AddLine "<body>"
-        .AddLine "    <div id='output' style='margin: 30px;'></div>"
     End With
     
     getHead = strText.ToString
+    
+End Function
+
+Private Function getCSS() As String
+    
+    'Declarations
+    Dim strText As New BAPT_StringBuilder
+
+    With strText
+        .AddLine "<style>"
+        .AddLine Options.Styles.ToCSS
+        .AddLine "</style>"
+    End With
+    
+    getCSS = strText.ToString
+
+End Function
+
+Private Function getBody() As String
+    
+    'Declarations
+    Dim strText As New BAPT_StringBuilder
+
+    With strText
+        .AddLine "<body>"
+        .AddLine "    <div id='output' style='margin: 30px;'></div>"
+        .AddLine "<script>"
+        .AddLine Options.DataSource.getData
+        .AddLine getScript
+        .AddLine "</script>"
+        .AddLine "</body>"
+    End With
+    
+    getBody = strText.ToString
     
 End Function
 
@@ -123,6 +155,8 @@ Private Function getScript() As String
             .AddLine "            '" & Options.Localization.Locale & "'"
         End If
         .CutTrailingComma
+        .AddLine "        );"
+        .AddLine "     });"
     End With
     
     getScript = strText.ToString
@@ -135,10 +169,6 @@ Private Function getFoot() As String
     Dim strText As New BAPT_StringBuilder
     
     With strText
-        .AddLine "        );"
-        .AddLine "     });"
-        .AddLine "    </script>"
-        .AddLine "</body>"
         .AddLine "</html>"
     End With
     
