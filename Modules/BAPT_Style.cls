@@ -18,6 +18,7 @@ Option Explicit
 
 Private m_Background As BAPT_Background
 Private m_Font As BAPT_Font
+Private m_Margin As String
 
 '### Properties
 
@@ -27,6 +28,13 @@ End Property
 
 Public Property Get Font() As BAPT_Font
     Set Font = m_Font
+End Property
+
+Public Property Get Margin() As String
+    Margin = m_Margin
+End Property
+Public Property Let Margin(ByVal newValue As String)
+    m_Margin = newValue
 End Property
 
 '### Instanzing
@@ -45,6 +53,9 @@ Friend Function ToCSS() As String
     
     strText.Add Background.ToCSS
     strText.Add Font.ToCSS
+    If m_Margin <> vbNullString Then
+        strText.Add "margin: " & Margin & ";"
+    End If
     
     ToCSS = strText.ToString
 End Function

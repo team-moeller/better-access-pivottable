@@ -52,7 +52,7 @@ Friend Function GenerateHTML() As String
         .AddLine getFoot
     End With
     GenerateHTML = strHTML.ToString()
-    Debug.Print GenerateHTML
+
 End Function
 
 
@@ -72,7 +72,7 @@ Private Function getHead() As String
         .AddLine "    <meta charset='utf-8'>"
         .AddLine "    <meta http-equiv='X-UA-Compatible' content='IE=Edge'/>"
         .AddLine "    <title>PivotTable</title>"
-        .AddLine "    <style>body{margin:0;padding:0;}</style>"
+        ' .AddLine "    <style>body{margin:0;padding:0;}</style>"
         .AddLine "    <link rel='stylesheet' href=" & BAPT.Scripts.PivotCSS.getLocation & ">"
         .AddLine "    <script src=" & BAPT.Scripts.JQueryJS.getLocation & "></script>"
         .AddLine "    <script src=" & BAPT.Scripts.JQueryUI.getLocation & "></script>"
@@ -112,7 +112,7 @@ Private Function getBody() As String
 
     With strText
         .AddLine "<body>"
-        .AddLine "    <div id='output' style='margin: 30px;'></div>"
+        .AddLine "  <div id='output'></div>"
         .AddLine "<script>"
         .AddLine Options.DataSource.getData
         .AddLine getScript

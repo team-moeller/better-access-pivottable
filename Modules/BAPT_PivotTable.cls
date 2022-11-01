@@ -197,6 +197,7 @@ End Sub
 
 Public Sub Init(Optional ByVal TheControl As Object)
       Set Me.Control = TheControl
+      Styles.Default.Margin = "30px"
 End Sub
 
 
