@@ -73,8 +73,6 @@ End Sub
 
 Friend Function GetCssToHideTotals() As String
 
-    GetCssToHideTotals = "    <style>thead > tr > th.pvtTotalLabel, .rowTotal, .pvtGrandTotal { display: none; }</style>"
+    GetCssToHideTotals = "thead > tr > th.pvtTotalLabel, .rowTotal, .pvtGrandTotal { display: none; }"
 
 End Function
-
-
