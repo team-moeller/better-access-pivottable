@@ -48,12 +48,11 @@ Friend Function GenerateHTML() As String
 
     With strHTML
         .AddLine getHead
-        .AddLine getCSS
         .AddLine getBody
         .AddLine getFoot
     End With
     GenerateHTML = strHTML.ToString()
- 
+    Debug.Print GenerateHTML
 End Function
 
 
@@ -81,12 +80,7 @@ Private Function getHead() As String
         If Options.Localization.Locale <> "en" Then
             .AddLine "    <script src=" & Options.Localization.getLocation & "></script>"
         End If
-        If Options.Columns.ShowTotals = False Then
-            .AddLine Options.Columns.GetCssToHideTotals
-        End If
-        If Options.Rows.ShowTotals = False Then
-            .AddLine Options.Rows.GetCssToHideTotals
-        End If
+        .AddLine getCSS()
         .AddLine "</head>"
     End With
     
@@ -102,6 +96,12 @@ Private Function getCSS() As String
     With strText
         .AddLine "<style>"
         .AddLine Options.Styles.ToCSS
+        If Options.Columns.ShowTotals = False Then
+            .AddLine Options.Columns.GetCssToHideTotals
+        End If
+        If Options.Rows.ShowTotals = False Then
+            .AddLine Options.Rows.GetCssToHideTotals
+        End If
         .AddLine "</style>"
     End With
     
