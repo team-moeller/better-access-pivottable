@@ -7,10 +7,14 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
+'###############################################################################################
+'# Copyright (c) 2021, 2022 Thomas Möller                                                      #
+'# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
+'# Version 1.50.08  published: 01.11.2022                                                      #
+'###############################################################################################
+
 Option Compare Database
 Option Explicit
-
-'### Members
 
 Private m_Color As String
 Private m_Opacity As Double

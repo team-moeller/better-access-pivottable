@@ -7,11 +7,11 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
-'###########################################################################################
-'# Copyright (c) 2020 - 2022 Thomas Moeller, supported by K.D.Gundermann                   #
-'# MIT License  => https://github.com/team-moeller/better-access-charts/blob/main/LICENSE  #
-'# Version 2.13.08  published: 06.02.2022                                                  #
-'###########################################################################################
+'###############################################################################################
+'# Copyright (c) 2021, 2022 Thomas Möller                                                      #
+'# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
+'# Version 1.50.08  published: 01.11.2022                                                      #
+'###############################################################################################
 
 Option Compare Database
 Option Explicit
