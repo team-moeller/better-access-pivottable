@@ -96,12 +96,8 @@ Private Function getCSS() As String
     With strText
         .AddLine "<style>"
         .AddLine Options.Styles.ToCSS
-        If Options.Columns.ShowTotals = False Then
-            .AddLine Options.Columns.GetCssToHideTotals
-        End If
-        If Options.Rows.ShowTotals = False Then
-            .AddLine Options.Rows.GetCssToHideTotals
-        End If
+        .AddLine Options.Columns.getCSS
+        .AddLine Options.Rows.getCSS
         .AddLine "</style>"
     End With
     

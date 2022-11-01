@@ -71,8 +71,8 @@ End Sub
 
 ' ### Generator Function
 
-Friend Function GetCssToHideTotals() As String
-
-    GetCssToHideTotals = "thead > tr > th.pvtTotalLabel, .rowTotal, .pvtGrandTotal { display: none; }"
-
+Friend Function getCSS() As String
+    If ShowTotals = False Then
+        getCSS = "thead > tr > th.pvtTotalLabel, .rowTotal, .pvtGrandTotal { display: none; }"
+    End If
 End Function
