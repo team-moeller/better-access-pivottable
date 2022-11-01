@@ -42,13 +42,12 @@ Friend Property Get ToCSS() As String
     Dim strText As New BAPT_StringBuilder
     
     If Color <> vbNullString Then
-        strText.AddLine "background-color: " & Color & ";"
+        strText.Add "background-color: " & Color & ";"
     End If
     If Opacity > 0 Then
-        strText.AddLine "opacity: " & Str(Opacity) & ";"
+        strText.Add "opacity: " & Str(Opacity) & ";"
     End If
     
     ToCSS = strText.ToString
 
 End Property
-

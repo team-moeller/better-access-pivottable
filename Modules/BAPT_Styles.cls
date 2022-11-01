@@ -124,23 +124,32 @@ End Sub
 Friend Function ToCSS() As String
     Dim strText As New BAPT_StringBuilder
     
-    strText.AddLine ".pvtUi { " & Default.ToCSS & " }"
+    strText.AddLine getCSS(".pvtUi", Default)
     
-    strText.AddLine "table .pvtVals { " & Vals.ToCSS & " }"
+    strText.AddLine getCSS("table .pvtVals", Vals)
     
-    strText.AddLine "table.pvtTable tbody tr td { " & Table.ToCSS & " important! }"
-    strText.AddLine "table.pvtTable .pvtVal { " & Val.ToCSS & " }"
-    strText.AddLine "table.pvtTable .pvtTotal { " & Total.ToCSS & " }"
-    strText.AddLine "table.pvtTable .pvtGrandTotal { " & GrandTotal.ToCSS & " }"
+    strText.AddLine getCSS("table.pvtTable tbody tr td", Table, "important!")
+    strText.AddLine getCSS("table.pvtTable .pvtVal", Val)
+    strText.AddLine getCSS("table.pvtTable .pvtTotal", Total)
+    strText.AddLine getCSS("table.pvtTable .pvtGrandTotal", GrandTotal)
     
-    strText.AddLine "table.pvtUi .pvtAxisContainer { " & AxisContainer.ToCSS & " }"
+    strText.AddLine getCSS("table.pvtUi .pvtAxisContainer", AxisContainer)
     
-    strText.AddLine "table.pvtTable .pvtAxisLabel { " & AxisLabel.ToCSS & " }"
-    strText.AddLine "table.pvtTable .pvtRowLabel  { " & RowLabel.ToCSS & " }"
-    strText.AddLine "table.pvtTable .pvtColLabel { " & ColLabel.ToCSS & " }"
-    strText.AddLine "table.pvtTable .pvtTotalLabel { " & TotalLabel.ToCSS & " }"
+    strText.AddLine getCSS("table.pvtTable .pvtAxisLabel", AxisLabel)
+    strText.AddLine getCSS("table.pvtTable .pvtRowLabel", RowLabel)
+    strText.AddLine getCSS("table.pvtTable .pvtColLabel", ColLabel)
+    strText.AddLine getCSS("table.pvtTable .pvtTotalLabel", TotalLabel)
     
-    strText.AddLine "table.pvtTable .pvtAttr { " & Attr.ToCSS & " }"
+    strText.AddLine getCSS("table.pvtTable .pvtAttr", Attr)
     
     ToCSS = strText.ToString
+End Function
+
+Private Function getCSS(ByVal Scope As String, ByVal Style As BAPT_Style, Optional ByVal Annotation As String) As String
+    Dim strCSS As String
+    
+    strCSS = Style.ToCSS
+    If strCSS <> vbNullString Then
+        getCSS = Scope & " { " & strCSS & " " & Annotation & " }"
+    End If
 End Function
