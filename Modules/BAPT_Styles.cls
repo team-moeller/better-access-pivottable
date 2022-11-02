@@ -8,30 +8,28 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 '###############################################################################################
-'# Copyright (c) 2021, 2022 Thomas Möller                                                      #
+'# Copyright (c) 2021, 2022 Thomas Möller, supported by K.D.Gundermann                         #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.50.08  published: 01.11.2022                                                      #
+'# Version 1.51.03  published: 02.11.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
 Option Explicit
 
+
+'### Members
+
 Private m_Default As BAPT_Style
-
 Private m_Table As BAPT_Style
-
 Private m_Vals As BAPT_Style    ' better name for this ??
-
 Private m_Val As BAPT_Style
 Private m_Total As BAPT_Style
 Private m_GrandTotal As BAPT_Style
-
 Private m_AxisContainer As BAPT_Style
 Private m_AxisLabel As BAPT_Style
 Private m_RowLabel As BAPT_Style
 Private m_ColLabel As BAPT_Style
 Private m_TotalLabel As BAPT_Style
-
 Private m_Attr As BAPT_Style
 
 
@@ -85,27 +83,23 @@ Public Property Get Attr() As BAPT_Style
     Set Attr = m_Attr
 End Property
 
+
 '### Instanzing
 
 Private Sub Class_Initialize()
     
     'Create sub classes
     Set m_Default = New BAPT_Style
-    
     Set m_Table = New BAPT_Style
-    
     Set m_Vals = New BAPT_Style
-    
     Set m_Val = New BAPT_Style
     Set m_Total = New BAPT_Style
     Set m_GrandTotal = New BAPT_Style
-    
     Set m_AxisContainer = New BAPT_Style
     Set m_AxisLabel = New BAPT_Style
     Set m_RowLabel = New BAPT_Style
     Set m_ColLabel = New BAPT_Style
     Set m_TotalLabel = New BAPT_Style
-    
     Set m_Attr = New BAPT_Style
     
     'Set default values
@@ -117,30 +111,29 @@ Private Sub Class_Terminate()
 End Sub
 
 
-'### Public Methods
+'### Public Functions
+
 
 '### Generator Function
 
 Friend Function ToCSS() As String
+
+    'Declarations
     Dim strText As New BAPT_StringBuilder
     
     strText.AddLine ".pvtUi { " & Default.ToCSS & " }"
-    
     strText.AddLine "table .pvtVals { " & Vals.ToCSS & " }"
-    
     strText.AddLine "table.pvtTable tbody tr td { " & Table.ToCSS & " important! }"
     strText.AddLine "table.pvtTable .pvtVal { " & Val.ToCSS & " }"
     strText.AddLine "table.pvtTable .pvtTotal { " & Total.ToCSS & " }"
     strText.AddLine "table.pvtTable .pvtGrandTotal { " & GrandTotal.ToCSS & " }"
-    
     strText.AddLine "table.pvtUi .pvtAxisContainer { " & AxisContainer.ToCSS & " }"
-    
     strText.AddLine "table.pvtTable .pvtAxisLabel { " & AxisLabel.ToCSS & " }"
     strText.AddLine "table.pvtTable .pvtRowLabel  { " & RowLabel.ToCSS & " }"
     strText.AddLine "table.pvtTable .pvtColLabel { " & ColLabel.ToCSS & " }"
     strText.AddLine "table.pvtTable .pvtTotalLabel { " & TotalLabel.ToCSS & " }"
-    
     strText.AddLine "table.pvtTable .pvtAttr { " & Attr.ToCSS & " }"
     
     ToCSS = strText.ToString
+    
 End Function
