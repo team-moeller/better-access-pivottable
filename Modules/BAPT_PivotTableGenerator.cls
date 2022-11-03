@@ -10,7 +10,7 @@ Attribute VB_Exposed = False
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.51.03  published: 02.11.2022                                                      #
+'# Version 1.52.01  published: 03.11.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -67,7 +67,6 @@ Private Function getHead() As String
     With strText
         .AddLine "<!DOCTYPE html>"
         .AddLine "<!-- saved from url=(0014)about:internet -->"
-        .AddLine "<!-- saved from url=(0016)http://localhost -->"
         .AddLine "<html>"
         .AddLine "<head>"
         .AddLine "    <meta charset='utf-8'>"

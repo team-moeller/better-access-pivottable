@@ -2,7 +2,7 @@ Attribute VB_Name = "BAPT__Namespace"
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.51.03  published: 02.11.2022                                                      #
+'# Version 1.52.01  published: 03.11.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
