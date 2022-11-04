@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller, supported by K.D.Gundermann                         #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.52.01  published: 03.11.2022                                                      #
+'# Version 1.53.04  published: 04.11.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -121,18 +121,18 @@ Friend Function ToCSS() As String
     'Declarations
     Dim strText As New BAPT_StringBuilder
     
-    strText.AddLine ".pvtUi { " & Default.ToCSS & " }"
-    strText.AddLine "table .pvtVals { " & Vals.ToCSS & " }"
-    strText.AddLine "table.pvtTable tbody tr td { " & Table.ToCSS & " important! }"
-    strText.AddLine "table.pvtTable .pvtVal { " & Val.ToCSS & " }"
-    strText.AddLine "table.pvtTable .pvtTotal { " & Total.ToCSS & " }"
-    strText.AddLine "table.pvtTable .pvtGrandTotal { " & GrandTotal.ToCSS & " }"
-    strText.AddLine "table.pvtUi .pvtAxisContainer { " & AxisContainer.ToCSS & " }"
-    strText.AddLine "table.pvtTable .pvtAxisLabel { " & AxisLabel.ToCSS & " }"
-    strText.AddLine "table.pvtTable .pvtRowLabel  { " & RowLabel.ToCSS & " }"
-    strText.AddLine "table.pvtTable .pvtColLabel { " & ColLabel.ToCSS & " }"
-    strText.AddLine "table.pvtTable .pvtTotalLabel { " & TotalLabel.ToCSS & " }"
-    strText.AddLine "table.pvtTable .pvtAttr { " & Attr.ToCSS & " }"
+    strText.AddLine "        .pvtUi { " & Default.ToCSS & " }"
+    strText.AddLine "        table .pvtVals { " & Vals.ToCSS & " }"
+    strText.AddLine "        table.pvtTable tbody tr td { " & Table.ToCSS & " important! }"
+    strText.AddLine "        table.pvtTable .pvtVal { " & Val.ToCSS & " }"
+    strText.AddLine "        table.pvtTable .pvtTotal { " & Total.ToCSS & " }"
+    strText.AddLine "        table.pvtTable .pvtGrandTotal { " & GrandTotal.ToCSS & " }"
+    strText.AddLine "        table.pvtUi .pvtAxisContainer { " & AxisContainer.ToCSS & " }"
+    strText.AddLine "        table.pvtTable .pvtAxisLabel { " & AxisLabel.ToCSS & " }"
+    strText.AddLine "        table.pvtTable .pvtRowLabel  { " & RowLabel.ToCSS & " }"
+    strText.AddLine "        table.pvtTable .pvtColLabel { " & ColLabel.ToCSS & " }"
+    strText.AddLine "        table.pvtTable .pvtTotalLabel { " & TotalLabel.ToCSS & " }"
+    strText.AddLine "        table.pvtTable .pvtAttr { " & Attr.ToCSS & " }"
     
     ToCSS = strText.ToString
     

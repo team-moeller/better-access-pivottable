@@ -10,7 +10,7 @@ Attribute VB_Exposed = False
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.52.01  published: 03.11.2022                                                      #
+'# Version 1.53.04  published: 04.11.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -48,7 +48,6 @@ Friend Function GenerateHTML() As String
 
     With strHTML
         .AddLine getHead
-        .AddLine getCSS
         .AddLine getBody
         .AddLine getFoot
     End With
@@ -86,6 +85,7 @@ Private Function getHead() As String
         If Options.Rows.ShowTotals = False Then
             .AddLine Options.Rows.GetCssToHideTotals
         End If
+        .AddLine getCSS
         .AddLine "</head>"
     End With
     
@@ -99,9 +99,9 @@ Private Function getCSS() As String
     Dim strText As New BAPT_StringBuilder
 
     With strText
-        .AddLine "<style>"
+        .AddLine "    <style>"
         .AddLine Options.Styles.ToCSS
-        .AddLine "</style>"
+        .AddLine "    </style>"
     End With
     
     getCSS = strText.ToString
