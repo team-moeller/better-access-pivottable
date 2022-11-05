@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.53.04  published: 04.11.2022                                                      #
+'# Version 1.54.04  published: 05.11.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -73,6 +73,6 @@ End Sub
 
 Friend Function GetCssToHideTotals() As String
 
-    GetCssToHideTotals = "    <style>tbody > tr > th.pvtTotalLabel, .colTotal, .pvtGrandTotal { display: none; }</style>"
+    GetCssToHideTotals = "        tbody > tr > th.pvtTotalLabel, .colTotal, .pvtGrandTotal { display: none; }"
 
 End Function

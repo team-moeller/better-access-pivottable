@@ -10,7 +10,7 @@ Attribute VB_Exposed = False
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.53.04  published: 04.11.2022                                                      #
+'# Version 1.54.04  published: 05.11.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -79,12 +79,6 @@ Private Function getHead() As String
         If Options.Localization.Locale <> "en" Then
             .AddLine "    <script src=" & Options.Localization.getLocation & "></script>"
         End If
-        If Options.Columns.ShowTotals = False Then
-            .AddLine Options.Columns.GetCssToHideTotals
-        End If
-        If Options.Rows.ShowTotals = False Then
-            .AddLine Options.Rows.GetCssToHideTotals
-        End If
         .AddLine getCSS
         .AddLine "</head>"
     End With
@@ -100,6 +94,12 @@ Private Function getCSS() As String
 
     With strText
         .AddLine "    <style>"
+        If Options.Columns.ShowTotals = False Then
+            .AddLine Options.Columns.GetCssToHideTotals
+        End If
+        If Options.Rows.ShowTotals = False Then
+            .AddLine Options.Rows.GetCssToHideTotals
+        End If
         .AddLine Options.Styles.ToCSS
         .AddLine "    </style>"
     End With
