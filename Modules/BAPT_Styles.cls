@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller, supported by K.D.Gundermann                         #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.54.04  published: 05.11.2022                                                      #
+'# Version 1.55.06  published: 06.11.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -121,18 +121,42 @@ Friend Function ToCSS() As String
     'Declarations
     Dim strText As New BAPT_StringBuilder
     
-    strText.AddLine "        .pvtUi { " & Default.ToCSS & " }"
-    strText.AddLine "        table .pvtVals { " & Vals.ToCSS & " }"
-    strText.AddLine "        table.pvtTable tbody tr td { " & Table.ToCSS & " important! }"
-    strText.AddLine "        table.pvtTable .pvtVal { " & Val.ToCSS & " }"
-    strText.AddLine "        table.pvtTable .pvtTotal { " & Total.ToCSS & " }"
-    strText.AddLine "        table.pvtTable .pvtGrandTotal { " & GrandTotal.ToCSS & " }"
-    strText.AddLine "        table.pvtUi .pvtAxisContainer { " & AxisContainer.ToCSS & " }"
-    strText.AddLine "        table.pvtTable .pvtAxisLabel { " & AxisLabel.ToCSS & " }"
-    strText.AddLine "        table.pvtTable .pvtRowLabel  { " & RowLabel.ToCSS & " }"
-    strText.AddLine "        table.pvtTable .pvtColLabel { " & ColLabel.ToCSS & " }"
-    strText.AddLine "        table.pvtTable .pvtTotalLabel { " & TotalLabel.ToCSS & " }"
-    strText.AddLine "        table.pvtTable .pvtAttr { " & Attr.ToCSS & " }"
+    If Len(Me.Default.ToCSS) > 0 Then
+        strText.AddLine "        .pvtUi { " & Me.Default.ToCSS & " }"
+    End If
+    If Len(Me.Vals.ToCSS) > 0 Then
+        strText.AddLine "        table .pvtVals { " & Me.Vals.ToCSS & " }"
+    End If
+    If Len(Me.Table.ToCSS) > 0 Then
+        strText.AddLine "        table.pvtTable tbody tr td { " & Me.Table.ToCSS & " important! }"
+    End If
+    If Len(Me.Val.ToCSS) > 0 Then
+        strText.AddLine "        table.pvtTable .pvtVal { " & Me.Val.ToCSS & " }"
+    End If
+    If Len(Me.Total.ToCSS) > 0 Then
+        strText.AddLine "        table.pvtTable .pvtTotal { " & Me.Total.ToCSS & " }"
+    End If
+    If Len(Me.GrandTotal.ToCSS) > 0 Then
+        strText.AddLine "        table.pvtTable .pvtGrandTotal { " & Me.GrandTotal.ToCSS & " }"
+    End If
+    If Len(Me.AxisContainer.ToCSS) > 0 Then
+        strText.AddLine "        table.pvtUi .pvtAxisContainer { " & Me.AxisContainer.ToCSS & " }"
+    End If
+    If Len(Me.AxisLabel.ToCSS) > 0 Then
+        strText.AddLine "        table.pvtTable .pvtAxisLabel { " & Me.AxisLabel.ToCSS & " }"
+    End If
+    If Len(Me.RowLabel.ToCSS) > 0 Then
+        strText.AddLine "        table.pvtTable .pvtRowLabel  { " & Me.RowLabel.ToCSS & " }"
+    End If
+    If Len(Me.ColLabel.ToCSS) > 0 Then
+        strText.AddLine "        table.pvtTable .pvtColLabel { " & Me.ColLabel.ToCSS & " }"
+    End If
+    If Len(Me.TotalLabel.ToCSS) > 0 Then
+        strText.AddLine "        table.pvtTable .pvtTotalLabel { " & Me.TotalLabel.ToCSS & " }"
+    End If
+    If Len(Me.Attr.ToCSS) > 0 Then
+        strText.AddLine "        table.pvtTable .pvtAttr { " & Me.Attr.ToCSS & " }"
+    End If
     
     ToCSS = strText.ToString
     

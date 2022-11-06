@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller, supported by K.D.Gundermann                         #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.54.04  published: 05.11.2022                                                      #
+'# Version 1.55.06  published: 06.11.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -77,19 +77,19 @@ Friend Property Get ToCSS() As String
     'Declarations
     Dim strText As New BAPT_StringBuilder
     
-    If Color <> vbNullString Then
-        strText.Add "color: " & Color & ";"
+    If Me.Color <> vbNullString Then
+        strText.Add "color: " & Me.Color & ";"
     End If
-    If Family <> vbNullString Then
-        strText.Add "font-family: " & Family & ";"
+    If Me.Family <> vbNullString Then
+        strText.Add "font-family: " & Me.Family & ";"
     End If
-    If Size > 0 Then
-        strText.Add "font-size: " & Size & "px;"
+    If Me.Size > 0 Then
+        strText.Add "font-size: " & Me.Size & "px;"
     End If
-    If IsItalic Then
+    If Me.IsItalic Then
         strText.Add "font-style: italic;"
     End If
-    If IsBold Then
+    If Me.IsBold Then
         strText.Add "font-weight: bold;"
     End If
     

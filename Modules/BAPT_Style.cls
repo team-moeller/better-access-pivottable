@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller, supported by K.D.Gundermann                         #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.54.04  published: 05.11.2022                                                      #
+'# Version 1.55.06  published: 06.11.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -55,8 +55,8 @@ Friend Function ToCSS() As String
     'Declarations
     Dim strText As New BAPT_StringBuilder
     
-    strText.Add Background.ToCSS
-    strText.Add Font.ToCSS
+    strText.Add Me.Background.ToCSS
+    strText.Add Me.Font.ToCSS
     
     ToCSS = strText.ToString
     
