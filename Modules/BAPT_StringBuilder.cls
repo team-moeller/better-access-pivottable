@@ -10,7 +10,7 @@ Attribute VB_Exposed = False
 '###############################################################################################
 '# Copyright (C) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.50.08  published: 01.11.2022                                                      #
+'# Version 1.55.06  published: 06.11.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -26,6 +26,8 @@ End Sub
 Public Sub AddLine(ByVal TheString As String)
     If m_String = vbNullString Then
         m_String = TheString
+    ElseIf TheString = vbNullString Then
+        m_String = m_String
     Else
         m_String = m_String & vbCrLf & TheString
     End If

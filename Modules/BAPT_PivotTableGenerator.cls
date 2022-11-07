@@ -8,9 +8,9 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '###############################################################################################
-'# Copyright (c) 2021, 2022 Thomas Möller                                                      #
+'# Copyright (c) 2021, 2022 Thomas MÃ¶ller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.50.08  published: 01.11.2022                                                      #
+'# Version 1.55.06  published: 06.11.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -66,7 +66,6 @@ Private Function getHead() As String
     With strText
         .AddLine "<!DOCTYPE html>"
         .AddLine "<!-- saved from url=(0014)about:internet -->"
-        .AddLine "<!-- saved from url=(0016)http://localhost -->"
         .AddLine "<html>"
         .AddLine "<head>"
         .AddLine "    <meta charset='utf-8'>"
@@ -80,7 +79,7 @@ Private Function getHead() As String
         If Options.Localization.Locale <> "en" Then
             .AddLine "    <script src=" & Options.Localization.getLocation & "></script>"
         End If
-        .AddLine getCSS()
+        .AddLine getCSS
         .AddLine "</head>"
     End With
     
@@ -94,11 +93,15 @@ Private Function getCSS() As String
     Dim strText As New BAPT_StringBuilder
 
     With strText
-        .AddLine "<style>"
+        .AddLine "    <style>"
+        If Options.Columns.ShowTotals = False Then
+            .AddLine Options.Columns.GetCssToHideTotals
+        End If
+        If Options.Rows.ShowTotals = False Then
+            .AddLine Options.Rows.GetCssToHideTotals
+        End If
         .AddLine Options.Styles.ToCSS
-        .AddLine Options.Columns.getCSS
-        .AddLine Options.Rows.getCSS
-        .AddLine "</style>"
+        .AddLine "    </style>"
     End With
     
     getCSS = strText.ToString
