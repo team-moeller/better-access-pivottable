@@ -8,7 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 '###############################################################################################
-'# Copyright (c) 2021, 2022 Thomas Möller                                                      #
+'# Copyright (c) 2021, 2022 Thomas MÃ¶ller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
 '# Version 1.55.06  published: 06.11.2022                                                      #
 '###############################################################################################

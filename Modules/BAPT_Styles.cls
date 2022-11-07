@@ -8,7 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 '###############################################################################################
-'# Copyright (c) 2021, 2022 Thomas Möller, supported by K.D.Gundermann                         #
+'# Copyright (c) 2021, 2022 Thomas MÃ¶ller, supported by K.D.Gundermann                         #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
 '# Version 1.55.06  published: 06.11.2022                                                      #
 '###############################################################################################
@@ -160,4 +160,13 @@ Friend Function ToCSS() As String
     
     ToCSS = strText.ToString
     
+End Function
+
+Private Function getCSS(ByVal Scope As String, ByVal Style As BAPT_Style, Optional ByVal Annotation As String) As String
+    Dim strCSS As String
+    
+    strCSS = Style.ToCSS
+    If strCSS <> vbNullString Then
+        getCSS = Scope & " { " & strCSS & " " & Annotation & " }"
+    End If
 End Function

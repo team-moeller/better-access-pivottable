@@ -8,7 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 '###############################################################################################
-'# Copyright (c) 2021, 2022 Thomas Möller, supported by K.D.Gundermann                         #
+'# Copyright (c) 2021, 2022 Thomas MÃ¶ller, supported by K.D.Gundermann                         #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
 '# Version 1.55.06  published: 06.11.2022                                                      #
 '###############################################################################################
@@ -64,4 +64,3 @@ Friend Property Get ToCSS() As String
     ToCSS = strText.ToString
 
 End Property
-
