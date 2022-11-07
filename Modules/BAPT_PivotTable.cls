@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.55.06  published: 06.11.2022                                                      #
+'# Version 1.56.05  published: 07.11.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -47,6 +47,7 @@ Private m_Aggregator As String
 Private m_AggregatorField As String
 Private m_RendererName As String
 Private m_DisplayIn As chDisplayIn
+Private m_Margin As Long
 
 Private m_Rows As BAPT_Rows
 Private m_Columns As BAPT_Columns
@@ -125,6 +126,13 @@ Public Property Get DisplayIn() As chDisplayIn
     DisplayIn = m_DisplayIn
 End Property
 
+Public Property Let Margin(ByVal newValue As Long)
+    m_Margin = newValue
+End Property
+Public Property Get Margin() As Long
+    Margin = m_Margin
+End Property
+
 
 '### Object Properties
 
@@ -165,6 +173,7 @@ Private Sub Class_Initialize()
     Me.Aggregator = "Count"
     Me.RendererName = "Table"
     Me.DisplayIn = chWebBrowserControl
+    Me.Margin = 30
     
 End Sub
 
@@ -197,7 +206,6 @@ End Sub
 
 Public Sub Init(Optional ByVal TheControl As Object)
       Set Me.Control = TheControl
-      Styles.Default.Margin = "30px"
 End Sub
 
 

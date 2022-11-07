@@ -8,9 +8,9 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '###############################################################################################
-'# Copyright (c) 2021, 2022 Thomas MÃ¶ller                                                      #
+'# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.55.06  published: 06.11.2022                                                      #
+'# Version 1.56.05  published: 07.11.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -52,7 +52,7 @@ Friend Function GenerateHTML() As String
         .AddLine getFoot
     End With
     GenerateHTML = strHTML.ToString()
-
+ 
 End Function
 
 
@@ -71,7 +71,7 @@ Private Function getHead() As String
         .AddLine "    <meta charset='utf-8'>"
         .AddLine "    <meta http-equiv='X-UA-Compatible' content='IE=Edge'/>"
         .AddLine "    <title>PivotTable</title>"
-        ' .AddLine "    <style>body{margin:0;padding:0;}</style>"
+        .AddLine "    <style>body{margin:0;padding:0;}</style>"
         .AddLine "    <link rel='stylesheet' href=" & BAPT.Scripts.PivotCSS.getLocation & ">"
         .AddLine "    <script src=" & BAPT.Scripts.JQueryJS.getLocation & "></script>"
         .AddLine "    <script src=" & BAPT.Scripts.JQueryUI.getLocation & "></script>"
@@ -94,6 +94,7 @@ Private Function getCSS() As String
 
     With strText
         .AddLine "    <style>"
+        .AddLine "        #output {margin: " & Options.Margin & "px;}"
         If Options.Columns.ShowTotals = False Then
             .AddLine Options.Columns.GetCssToHideTotals
         End If
@@ -115,7 +116,7 @@ Private Function getBody() As String
 
     With strText
         .AddLine "<body>"
-        .AddLine "  <div id='output'></div>"
+        .AddLine "    <div id='output'></div>"
         .AddLine "<script>"
         .AddLine Options.DataSource.getData
         .AddLine getScript

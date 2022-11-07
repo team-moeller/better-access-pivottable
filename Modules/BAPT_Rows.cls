@@ -8,9 +8,9 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 '###############################################################################################
-'# Copyright (c) 2021, 2022 Thomas MÃ¶ller                                                      #
+'# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.55.06  published: 06.11.2022                                                      #
+'# Version 1.56.05  published: 07.11.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -76,3 +76,5 @@ Friend Function GetCssToHideTotals() As String
     GetCssToHideTotals = "        thead > tr > th.pvtTotalLabel, .rowTotal, .pvtGrandTotal { display: none; }"
 
 End Function
+
+
