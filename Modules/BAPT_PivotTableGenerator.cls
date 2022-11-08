@@ -10,7 +10,7 @@ Attribute VB_Exposed = False
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.56.05  published: 07.11.2022                                                      #
+'# Version 1.57.05  published: 08.11.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -68,17 +68,16 @@ Private Function getHead() As String
         .AddLine "<!-- saved from url=(0014)about:internet -->"
         .AddLine "<html>"
         .AddLine "<head>"
-        .AddLine "    <meta charset='utf-8'>"
-        .AddLine "    <meta http-equiv='X-UA-Compatible' content='IE=Edge'/>"
         .AddLine "    <title>PivotTable</title>"
-        .AddLine "    <style>body{margin:0;padding:0;}</style>"
-        .AddLine "    <link rel='stylesheet' href=" & BAPT.Scripts.PivotCSS.getLocation & ">"
+        .AddLine "    <meta charset='utf-8'>"
+        .AddLine "    <meta http-equiv='X-UA-Compatible' content='IE=Edge'>"
         .AddLine "    <script src=" & BAPT.Scripts.JQueryJS.getLocation & "></script>"
         .AddLine "    <script src=" & BAPT.Scripts.JQueryUI.getLocation & "></script>"
         .AddLine "    <script src=" & BAPT.Scripts.PivotJS.getLocation & "></script>"
         If Options.Localization.Locale <> "en" Then
             .AddLine "    <script src=" & Options.Localization.getLocation & "></script>"
         End If
+        .AddLine "    <link rel='stylesheet' href=" & BAPT.Scripts.PivotCSS.getLocation & ">"
         .AddLine getCSS
         .AddLine "</head>"
     End With
@@ -94,6 +93,7 @@ Private Function getCSS() As String
 
     With strText
         .AddLine "    <style>"
+        .AddLine "        body{margin:0;padding:0;}"
         .AddLine "        #output {margin: " & Options.Margin & "px;}"
         If Options.Columns.ShowTotals = False Then
             .AddLine Options.Columns.GetCssToHideTotals
