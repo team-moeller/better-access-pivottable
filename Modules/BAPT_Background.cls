@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller, supported by K.D.Gundermann                         #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.58.38  published: 09.11.2022                                                      #
+'# Version 1.59.03  published: 10.11.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -54,11 +54,11 @@ Friend Property Get ToCSS() As String
     Dim strText As New BAPT_StringBuilder
     
     If Color <> vbNullString Then
-        strText.AddLine "background-color: " & Me.Color & ";"
+        strText.Add "background-color: " & Me.Color & ";"
     End If
     
     If Opacity > 0 Then
-        strText.AddLine "opacity: " & Str(Me.Opacity) & ";"
+        strText.Add "opacity: " & Str(Me.Opacity) & ";"
     End If
     
     ToCSS = strText.ToString

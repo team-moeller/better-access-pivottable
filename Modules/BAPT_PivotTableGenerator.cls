@@ -10,7 +10,7 @@ Attribute VB_Exposed = False
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.58.38  published: 09.11.2022                                                      #
+'# Version 1.59.03  published: 10.11.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -117,10 +117,10 @@ Private Function getBody() As String
     With strText
         .AddLine "<body>"
         .AddLine "    <div id='output'></div>"
-        .AddLine "<script>"
+        .AddLine "    <script>"
         .AddLine Options.DataSource.getData
         .AddLine getScript
-        .AddLine "</script>"
+        .AddLine "    </script>"
         .AddLine "</body>"
     End With
     

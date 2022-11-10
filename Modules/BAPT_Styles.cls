@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller, supported by K.D.Gundermann                         #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.58.38  published: 09.11.2022                                                      #
+'# Version 1.59.03  published: 10.11.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -155,7 +155,7 @@ Friend Function ToCSS() As String
         strText.AddLine "        table.pvtTable .pvtTotalLabel { " & Me.TotalLabel.ToCSS & " }"
     End If
     If Len(Me.Attr.ToCSS) > 0 Then
-        strText.AddLine "        table.pvtTable .pvtAttr { " & Me.Attr.ToCSS & " }"
+        strText.AddLine "        .pvtUi .pvtAttr { " & Me.Attr.ToCSS & " }"
     End If
     
     ToCSS = strText.ToString
