@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.59.03  published: 10.11.2022                                                      #
+'# Version 1.60.02  published: 11.11.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -143,9 +143,9 @@ Private Function getDataFromRS(ByVal rst As Object) As String
     Dim strLine As String
 
     With strText
-        .AddLine "    var data = ["
+        .AddLine "        var data = ["
         Do While Not rst.EOF
-            strLine = "                {"
+            strLine = "            {"
             For Each fld In rst.Fields
                 strLine = strLine & "'" & fld.Name & "': '" & rst(fld.Name) & "', "
             Next fld
@@ -154,7 +154,7 @@ Private Function getDataFromRS(ByVal rst As Object) As String
             rst.MoveNext
         Loop
         .CutTrailingComma
-        .AddLine "               ]"
+        .AddLine "        ]"
     End With
     
     getDataFromRS = strText.ToString
@@ -168,15 +168,15 @@ Private Function getDemoData() As String
     Dim strLine As String
 
     With strText
-        .AddLine "    var data = ["
-        .AddLine "                {'State/Province': 'NV', 'Salesperson': 'Anne Hellung-Larsen', 'ExtendedPrice': '1400'},"
-        .AddLine "                {'State/Province': 'NV', 'Salesperson': 'Anne Hellung-Larsen', 'ExtendedPrice': '1200'},"
-        .AddLine "                {'State/Province': 'NV', 'Salesperson': 'Anne Hellung-Larsen', 'ExtendedPrice': '100'},"
-        .AddLine "                {'State/Province': 'NY', 'Salesperson': 'Mariya Sergienko', 'ExtendedPrice': '100'},"
-        .AddLine "                {'State/Province': 'NY', 'Salesperson': 'Mariya Sergienko', 'ExtendedPrice': '400'},"
-        .AddLine "                {'State/Province': 'NY', 'Salesperson': 'Mariya Sergienko', 'ExtendedPrice': '1400'},"
+        .AddLine "        var data = ["
+        .AddLine "            {'State/Province': 'NV', 'Salesperson': 'Anne Hellung-Larsen', 'ExtendedPrice': '1400'},"
+        .AddLine "            {'State/Province': 'NV', 'Salesperson': 'Anne Hellung-Larsen', 'ExtendedPrice': '1200'},"
+        .AddLine "            {'State/Province': 'NV', 'Salesperson': 'Anne Hellung-Larsen', 'ExtendedPrice': '100'},"
+        .AddLine "            {'State/Province': 'NY', 'Salesperson': 'Mariya Sergienko', 'ExtendedPrice': '100'},"
+        .AddLine "            {'State/Province': 'NY', 'Salesperson': 'Mariya Sergienko', 'ExtendedPrice': '400'},"
+        .AddLine "            {'State/Province': 'NY', 'Salesperson': 'Mariya Sergienko', 'ExtendedPrice': '1400'},"
         .CutTrailingComma
-        .AddLine "               ]"
+        .AddLine "        ]"
     End With
     
     getDemoData = strText.ToString
