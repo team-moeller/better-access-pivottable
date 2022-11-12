@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller, supported by K.D.Gundermann                         #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.60.02  published: 11.11.2022                                                      #
+'# Version 1.61.02  published: 12.11.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -121,43 +121,36 @@ Friend Function ToCSS() As String
     'Declarations
     Dim strText As New BAPT_StringBuilder
     
-    If Len(Me.Default.ToCSS) > 0 Then
-        strText.AddLine "        .pvtUi { " & Me.Default.ToCSS & " }"
-    End If
-    If Len(Me.Vals.ToCSS) > 0 Then
-        strText.AddLine "        table .pvtVals { " & Me.Vals.ToCSS & " }"
-    End If
-    If Len(Me.Table.ToCSS) > 0 Then
-        strText.AddLine "        table.pvtTable tbody tr td { " & Me.Table.ToCSS & " important! }"
-    End If
-    If Len(Me.Val.ToCSS) > 0 Then
-        strText.AddLine "        table.pvtTable .pvtVal { " & Me.Val.ToCSS & " }"
-    End If
-    If Len(Me.Total.ToCSS) > 0 Then
-        strText.AddLine "        table.pvtTable .pvtTotal { " & Me.Total.ToCSS & " }"
-    End If
-    If Len(Me.GrandTotal.ToCSS) > 0 Then
-        strText.AddLine "        table.pvtTable .pvtGrandTotal { " & Me.GrandTotal.ToCSS & " }"
-    End If
-    If Len(Me.AxisContainer.ToCSS) > 0 Then
-        strText.AddLine "        table.pvtUi .pvtAxisContainer { " & Me.AxisContainer.ToCSS & " }"
-    End If
-    If Len(Me.AxisLabel.ToCSS) > 0 Then
-        strText.AddLine "        table.pvtTable .pvtAxisLabel { " & Me.AxisLabel.ToCSS & " }"
-    End If
-    If Len(Me.RowLabel.ToCSS) > 0 Then
-        strText.AddLine "        table.pvtTable .pvtRowLabel  { " & Me.RowLabel.ToCSS & " }"
-    End If
-    If Len(Me.ColLabel.ToCSS) > 0 Then
-        strText.AddLine "        table.pvtTable .pvtColLabel { " & Me.ColLabel.ToCSS & " }"
-    End If
-    If Len(Me.TotalLabel.ToCSS) > 0 Then
-        strText.AddLine "        table.pvtTable .pvtTotalLabel { " & Me.TotalLabel.ToCSS & " }"
-    End If
-    If Len(Me.Attr.ToCSS) > 0 Then
-        strText.AddLine "        .pvtUi .pvtAttr { " & Me.Attr.ToCSS & " }"
-    End If
+    strText.AddLine getCSS(".pvtUi", Default)
+    strText.AddLine getCSS("table.pvtTable tbody tr td", Table, "important!")
+    strText.AddLine getCSS("table .pvtVals", Vals)
+    strText.AddLine getCSS("table.pvtTable .pvtVal", Val)
+    strText.AddLine getCSS("table.pvtTable .pvtTotal", Total)
+    strText.AddLine getCSS("table.pvtTable .pvtGrandTotal", GrandTotal)
+    strText.AddLine getCSS("table.pvtUi .pvtAxisContainer", AxisContainer)
+    strText.AddLine getCSS("table.pvtTable .pvtAxisLabel", AxisLabel)
+    strText.AddLine getCSS("table.pvtTable .pvtRowLabel", RowLabel)
+    strText.AddLine getCSS("table.pvtTable .pvtColLabel", ColLabel)
+    strText.AddLine getCSS("table.pvtTable .pvtTotalLabel", TotalLabel)
+    strText.AddLine getCSS(".pvtUi .pvtAttr", Attr)
     
     ToCSS = strText.ToString
+    
+End Function
+
+Private Function getCSS(ByVal Scope As String, ByVal Style As BAPT_Style, Optional ByVal Annotation As String) As String
+
+    'Declarations
+    Dim strCSS As String
+
+    strCSS = Style.ToCSS
+    If strCSS <> vbNullString Then
+        getCSS = Space(8) & Scope & " { " & strCSS
+        If Len(Annotation) > 0 Then
+            getCSS = getCSS & " " + Annotation & " }"
+        Else
+            getCSS = getCSS & " }"
+        End If
+    End If
     
 End Function
