@@ -64,3 +64,9 @@ myPivot.RendererName = "Table"
 * In line 4, the renderer name is set.
 
 **5. Set further attributes for the pivot table**
+
+The next step is to adapt the pivot table to your own needs. For example, you can define the filed names for [rows](https://github.com/team-moeller/better-access-pivottable/wiki/rows) and [columns](https://github.com/team-moeller/better-access-pivottable/wiki/columns) or adjust the some [styles](https://github.com/team-moeller/better-access-pivottable/wiki/styles).
+
+The project currently has 25 subclasses with lots of properties. You can see all of them in the documentation on the Wiki. I have also presented the individual progress in the blog.
+
+As you can see, there are a multitude of sources. Take a look around and make use of the options provided.
