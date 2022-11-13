@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller, supported by K.D.Gundermann                         #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.61.02  published: 12.11.2022                                                      #
+'# Version 1.62.03  published: 13.11.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -147,9 +147,9 @@ Private Function getCSS(ByVal Scope As String, ByVal Style As BAPT_Style, Option
     If strCSS <> vbNullString Then
         getCSS = Space(8) & Scope & " { " & strCSS
         If Len(Annotation) > 0 Then
-            getCSS = getCSS & " " + Annotation & " }"
+            getCSS = getCSS & Annotation & " }"
         Else
-            getCSS = getCSS & " }"
+            getCSS = getCSS & "}"
         End If
     End If
     
