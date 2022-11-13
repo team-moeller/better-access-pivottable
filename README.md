@@ -63,4 +63,4 @@ myPivot.RendererName = "Table"
 * Line 3 defines the aggregator field.
 * In line 4, the renderer name is set.
 
-**5. Set further attributes for the chart**
+**5. Set further attributes for the pivot table**
