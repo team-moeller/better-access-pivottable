@@ -41,5 +41,26 @@ myPivot.ShowPivot
 * In line 2 a new instance of this class is created and the web browser control is assigned to the class module.
 * The pivot table is created in line 3. 
 
-
 When you run this code, you will see a pivot table with some data. At the moment no data source is assigned. In such a case, Better-Access PivotTable simply shows a standard data source with 6 entries. This is particularly practical for our example. We have now done a quick test and fundamentally implemented the pivot table.
+
+**4. Add a data source and define some basic attributes**
+
+In order for the pivot table to show something, it needs a [data source](https://github.com/team-moeller/better-access-pivottable/wiki/datasource). You can use the [DataSource.ObjectName](https://github.com/team-moeller/better-access-pivottable/wiki/datasource#objectname) property for this, for example. Enter the name of a table or a query that contains the data to be displayed.
+
+Finally, use the [Aggregator](https://github.com/team-moeller/better-access-pivottable/wiki/pivottable#aggregator) and the [AggregatorField](https://github.com/team-moeller/better-access-pivottable/wiki/pivottable#aggregatorfield) properties specify how the data is initially summarized in the pivot table. Use the [RendererName ](https://github.com/team-moeller/better-access-pivottable/wiki/pivottable#renderername) property to define how the data is initially displayed.
+
+The necessary VBA code could look like this, for example:
+
+```vba
+myPivot.DataSource.ObjectName = "tbl_DemoData"
+myPivot.Aggregator = "Sum"
+myPivot.AggregatorField = "ExtendedPrice"
+myPivot.RendererName = "Table"
+```
+
+* In line 1, the table "tbl_Demo_Data" is specified as the data source.
+* Line 2 sets the aggregator to "sum".
+* Line 3 defines the aggregator field.
+* In line 4, the renderer name is set.
+
+**5. Set further attributes for the chart**
