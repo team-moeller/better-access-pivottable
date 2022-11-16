@@ -1,9 +1,9 @@
 Attribute VB_Name = "mdl_Helpers"
-'###########################################################################################
-'# Copyright (c) 2020 - 2022 Thomas Moeller, supported by K.D.Gundermann                   #
-'# MIT License  => https://github.com/team-moeller/better-access-charts/blob/main/LICENSE  #
-'# Version 2.25.03  published: 16.11.2022                                                  #
-'###########################################################################################
+'###############################################################################################
+'# Copyright (c) 2021, 2022 Thomas Möller                                                      #
+'# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
+'# Version 1.62.03  published: 13.11.2022                                                      #
+'###############################################################################################
 
 Option Compare Database
 Option Explicit
@@ -19,7 +19,7 @@ Public Function File2OLE(ByVal Table As String, ByVal PrimaryKeyFieldName As Str
                          ByVal FileName As String, Optional ByVal InCurrentProjectPath As Boolean) As Long
 
 'Prerequisit: Record with ID must already exist
-'Call: File2OLE("USys_FileData","ID","FileData","1","Chart.min.js",True)
+'Call: File2OLE("USys_FileData","ID","FileData","1","Pivot.min.js",True)
 
     On Error GoTo Handle_Error
 
@@ -103,7 +103,7 @@ Public Sub PrepareAndExportModules(Optional ByVal TagVersion As Boolean = True)
     
     MakeSureDirectoryPathExists CurrentProject.Path & "\Modules\"
     Version = DLast("V_Number", "tbl_VersionHistory")
-    CodeLine = "'# Version " & Version & "  published: " & Format$(Date, "dd.mm.yyyy") & "                                                  #"
+    CodeLine = "'# Version " & Version & "  published: " & Format$(Date, "dd.mm.yyyy") & "                                                      #"
     
     For Each vbc In Application.VBE.ActiveVBProject.VBComponents
         If vbc.Type = 1 Or vbc.Type = 2 Then
@@ -117,7 +117,7 @@ Public Sub PrepareAndExportModules(Optional ByVal TagVersion As Boolean = True)
     Next
     Application.DoCmd.RunCommand (acCmdCompileAndSaveAllModules)
     
-    MsgBox "Export done", vbInformation, "Better Access Charts"
+    MsgBox "Export done", vbInformation, "Better Access PivotTable"
 
 End Sub
 
@@ -147,7 +147,7 @@ Public Sub ImportModules()
     Loop
     Application.DoCmd.RunCommand (acCmdCompileAndSaveAllModules)
     
-    MsgBox "Import done", vbInformation, "Better Access Charts"
+    MsgBox "Import done", vbInformation, "Better Access PivotTable"
 
 End Sub
 
