@@ -10,7 +10,7 @@ Attribute VB_Exposed = False
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.62.03  published: 13.11.2022                                                      #
+'# Version 1.63.04  published: 24.11.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -44,14 +44,14 @@ End Sub
 Friend Function GenerateHTML() As String
 
     'Declarations
-    Dim strHTML As New BAPT_StringBuilder
+    Dim strHtml As New BAPT_StringBuilder
 
-    With strHTML
+    With strHtml
         .AddLine getHead
         .AddLine getBody
         .AddLine getFoot
     End With
-    GenerateHTML = strHTML.ToString()
+    GenerateHTML = strHtml.ToString()
  
 End Function
 

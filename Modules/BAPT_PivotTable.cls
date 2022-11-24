@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.62.03  published: 13.11.2022                                                      #
+'# Version 1.63.04  published: 24.11.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -185,12 +185,25 @@ End Sub
 '### Public Methods
 
 Public Sub ShowPivot()
-    
+
+    'Declarations
+    Dim strHtml As String
+
     CreateHtmlFile
     
     Select Case Me.DisplayIn
         Case chDisplayIn.chWebBrowserControl
-            Me.WebBrowserControl.Object.Navigate getHTMLFileName
+            CreateEmptyHtmlFile
+            Me.WebBrowserControl.Object.Navigate getHTMLFileName(, True)
+            Do While Me.WebBrowserControl.Object.Busy Or Me.WebBrowserControl.Object.ReadyState <> 4
+                DoEvents
+            Loop
+            With Me.WebBrowserControl.Object.Document
+                .Open
+                strHtml = BAPT.Generator(Me).GenerateHTML
+                .Write strHtml
+                .Close
+            End With
         Case chDisplayIn.chWebBrowserActiveX
             Me.WebBrowserActiveX.Navigate getHTMLFileName
         Case chDisplayIn.chSystemBrowser
@@ -211,44 +224,65 @@ End Sub
 
 '### Private Methods
 
+Private Sub CreateEmptyHtmlFile()
+
+    'Decalarations
+    Dim strHtml As New BAPT_StringBuilder
+    
+    With strHtml
+        .AddLine "<!DOCTYPE html>"
+        .AddLine "<!-- saved from url=(0014)about:internet -->"
+        .AddLine "<html>"
+        .AddLine "<head>"
+        .AddLine "    <meta http-equiv='X-UA-Compatible' content='IE=Edge'>"
+        .AddLine "</head>"
+        .AddLine "<body>"
+        .AddLine "</body>"
+        .AddLine "</html>"
+    End With
+    
+    Call saveHtmlFile(vbNullString, strHtml.ToString, True)
+    
+End Sub
+
 Private Sub CreateHtmlFile()
 
     'Declarations
-    Dim strHTML As String
+    Dim strHtml As String
     
     With BAPT.Generator(Me)
-        strHTML = .GenerateHTML
+        strHtml = .GenerateHTML
     End With
  
     If Me.SaveHtmlFileForDebugging = True Then
-        Call saveHtmlFile(CurrentProject.Path & "\", strHTML)
+        Call saveHtmlFile(CurrentProject.Path & "\", strHtml)
     End If
     
-    Call saveHtmlFile(BAPT.Helper.getTempFolder, strHTML)
+    Call saveHtmlFile(BAPT.Helper.getTempFolder, strHtml)
     
 End Sub
 
 
 '### Private Helper Methods
 
-Private Sub saveHtmlFile(ByVal Folder As String, ByVal strHTML As String)
+Private Sub saveHtmlFile(ByVal Folder As String, ByVal strHtml As String, Optional ByVal fEmpty As Boolean = False)
 
     'Declarations
     Dim objFS As Object
     Dim FileName As String
        
-    FileName = getHTMLFileName(Folder)
+    FileName = getHTMLFileName(Folder, fEmpty)
     
     Set objFS = CreateObject("ADODB.Stream")
     objFS.Charset = "utf-8"
     objFS.Open
-    objFS.WriteText strHTML
+    objFS.WriteText strHtml
     objFS.SaveToFile FileName, 2   '2: Create Or Update
     objFS.Close
-     
+    
 End Sub
 
-Private Function getHTMLFileName(Optional Path As String = vbNullString) As String
+Private Function getHTMLFileName(Optional Path As String = vbNullString, Optional fEmpty As Boolean = False) As String
     
     'Declarations
     Dim strFilename As String
@@ -257,8 +291,13 @@ Private Function getHTMLFileName(Optional Path As String = vbNullString) As Stri
     If Path = vbNullString Then
         Path = BAPT.Helper.getTempFolder
     End If
-    strFilename = Replace(HtmlFileName, "{}", ObjPtr(Me))
+    If fEmpty = True Then
+        strFilename = "Empty.html"
+    Else
+        strFilename = Replace(HtmlFileName, "{}", ObjPtr(Me))
+    End If
 
     getHTMLFileName = Path & strFilename
     
 End Function
+
