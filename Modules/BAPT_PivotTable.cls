@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2022 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.63.04  published: 24.11.2022                                                      #
+'# Version 1.64.02  published: 25.11.2022                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -188,8 +188,6 @@ Public Sub ShowPivot()
 
     'Declarations
     Dim strHtml As String
-
-    CreateHtmlFile
     
     Select Case Me.DisplayIn
         Case chDisplayIn.chWebBrowserControl
@@ -205,8 +203,19 @@ Public Sub ShowPivot()
                 .Close
             End With
         Case chDisplayIn.chWebBrowserActiveX
-            Me.WebBrowserActiveX.Navigate getHTMLFileName
+            CreateEmptyHtmlFile
+            Me.WebBrowserActiveX.Navigate getHTMLFileName(, True)
+            Do While Me.WebBrowserActiveX.Busy Or Me.WebBrowserActiveX.ReadyState <> 4
+                DoEvents
+            Loop
+            With Me.WebBrowserActiveX.Document
+                .Open
+                strHtml = BAPT.Generator(Me).GenerateHTML
+                .Write strHtml
+                .Close
+            End With
         Case chDisplayIn.chSystemBrowser
+            CreateHtmlFile
             BAPT.Helper.ShellExecute getHTMLFileName
         Case Else
             'Do nothing
