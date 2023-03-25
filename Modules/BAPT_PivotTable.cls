@@ -8,9 +8,9 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 '###############################################################################################
-'# Copyright (c) 2021, 2022 Thomas Möller                                                      #
+'# Copyright (c) 2021, 2023 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 1.65.01  published: 30.12.2022                                                      #
+'# Version 2.00.11  published: 25.03.2023                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -39,7 +39,7 @@ End Enum
 
 '### Members
 
-Private m_WebBrowserControl As Access.WebBrowserControl
+Private m_WebBrowserControl As Access.Edge
 Private m_WebBrowserActiveX As SHDocVw.WebBrowser
 Private m_IsInteractive As Boolean
 Private m_SaveHtmlFileForDebugging As Boolean
@@ -59,7 +59,7 @@ Private m_Styles As BAPT_Styles
 '### Properties
 
 Public Property Set Control(ByVal New_Control As Object)
-    If TypeName(New_Control) = "WebBrowserControl" Then
+    If TypeName(New_Control) = "Edge" Then
         Set Me.WebBrowserControl = New_Control
     ElseIf TypeName(New_Control.Object) = "WebBrowser" Then
         Set Me.WebBrowserActiveX = New_Control.Object
@@ -68,11 +68,11 @@ Public Property Set Control(ByVal New_Control As Object)
     End If
 End Property
 
-Public Property Set WebBrowserControl(ByVal New_Control As Access.WebBrowserControl)
+Public Property Set WebBrowserControl(ByVal New_Control As Access.Edge)
     Set m_WebBrowserControl = New_Control
     m_DisplayIn = chWebBrowserControl
 End Property
-Public Property Get WebBrowserControl() As WebBrowserControl
+Public Property Get WebBrowserControl() As Edge
     Set WebBrowserControl = m_WebBrowserControl
 End Property
 
@@ -191,17 +191,32 @@ Public Sub ShowPivot()
     
     Select Case Me.DisplayIn
         Case chDisplayIn.chWebBrowserControl
-            CreateEmptyHtmlFile
-            Me.WebBrowserControl.Object.Navigate getHTMLFileName(, True)
-            Do While Me.WebBrowserControl.Object.Busy Or Me.WebBrowserControl.Object.ReadyState <> 4
-                DoEvents
-            Loop
-            With Me.WebBrowserControl.Object.Document
-                .Open
+''            CreateEmptyHtmlFile
+''            Me.WebBrowserControl.Object.Navigate getHTMLFileName(, True)
+''            Do While Me.WebBrowserControl.Object.Busy Or Me.WebBrowserControl.Object.ReadyState <> 4
+''                DoEvents
+''            Loop
+            If Me.WebBrowserControl.LocationURL = vbNullString Then
+                CreateEmptyHtmlFile
+                Me.WebBrowserControl.Navigate "https://msaccess/" & getHTMLFileName(, True)
+                Do While Me.WebBrowserControl.ReadyState <> 4
+                    DoEvents
+                Loop
+            End If
+''            With Me.WebBrowserControl.Object.Document
+''                .Open
                 strHtml = BAPT.Generator(Me).GenerateHTML
-                .Write strHtml
-                .Close
-            End With
+                strHtml = Replace(strHtml, vbCrLf, "")
+'''                .Write strHtml
+'''                .Close
+'''            End With
+            Dim js As String
+            js = js & "document.open();"
+            js = js & "document.write(""" & strHtml & """);"
+            js = js & "document.close();"
+            
+            Me.WebBrowserControl.ExecuteJavascript js
+            
             If Me.SaveHtmlFileForDebugging = True Then
                 Call saveHtmlFile(CurrentProject.Path & "\", strHtml)
             End If
