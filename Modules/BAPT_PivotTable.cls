@@ -10,7 +10,7 @@ Attribute VB_Exposed = True
 '###############################################################################################
 '# Copyright (c) 2021, 2023 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 2.01.02  published: 26.03.2023                                                      #
+'# Version 2.02.04  published: 27.03.2023                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -188,14 +188,10 @@ Public Sub ShowPivot()
 
     'Declarations
     Dim strHtml As String
+    Dim js As String
     
     Select Case Me.DisplayIn
         Case chDisplayIn.chWebBrowserControl
-''            CreateEmptyHtmlFile
-''            Me.WebBrowserControl.Object.Navigate getHTMLFileName(, True)
-''            Do While Me.WebBrowserControl.Object.Busy Or Me.WebBrowserControl.Object.ReadyState <> 4
-''                DoEvents
-''            Loop
             If Me.WebBrowserControl.LocationURL = vbNullString Then
                 CreateEmptyHtmlFile
                 Me.WebBrowserControl.Navigate "https://msaccess/" & getHTMLFileName(, True)
@@ -203,23 +199,15 @@ Public Sub ShowPivot()
                     DoEvents
                 Loop
             End If
-''            With Me.WebBrowserControl.Object.Document
-''                .Open
-                strHtml = BAPT.Generator(Me).GenerateHTML
-                strHtml = Replace(strHtml, vbCrLf, "")
-'''                .Write strHtml
-'''                .Close
-'''            End With
-            Dim js As String
-            js = js & "document.open();"
-            js = js & "document.write(""" & strHtml & """);"
-            js = js & "document.close();"
-            
-            Me.WebBrowserControl.ExecuteJavascript js
-            
+            strHtml = BAPT.Generator(Me).GenerateHTML
             If Me.SaveHtmlFileForDebugging = True Then
                 Call saveHtmlFile(CurrentProject.Path & "\", strHtml)
             End If
+            strHtml = Replace(strHtml, vbCrLf, "")
+            js = js & "document.open();"
+            js = js & "document.write(""" & strHtml & """);"
+            js = js & "document.close();"
+            Me.WebBrowserControl.ExecuteJavascript js
         Case chDisplayIn.chWebBrowserActiveX
             CreateEmptyHtmlFile
             Me.WebBrowserActiveX.Navigate getHTMLFileName(, True)
