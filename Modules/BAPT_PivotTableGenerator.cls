@@ -10,7 +10,7 @@ Attribute VB_Exposed = False
 '###############################################################################################
 '# Copyright (c) 2021, 2023 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 2.02.04  published: 27.03.2023                                                      #
+'# Version 2.03.02  published: 28.03.2023                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -65,12 +65,10 @@ Private Function getHead() As String
     
     With strText
         .AddLine "<!DOCTYPE html>"
-        .AddLine "<!-- saved from url=(0014)about:internet -->"
         .AddLine "<html>"
         .AddLine "<head>"
         .AddLine "    <title>PivotTable</title>"
         .AddLine "    <meta charset='utf-8'>"
-        .AddLine "    <meta http-equiv='X-UA-Compatible' content='IE=Edge'>"
         .AddLine "    <script src=" & BAPT.Scripts.JQueryJS.getLocation & "></script>"
         .AddLine "    <script src=" & BAPT.Scripts.JQueryUI.getLocation & "></script>"
         .AddLine "    <script src=" & BAPT.Scripts.PivotJS.getLocation & "></script>"
