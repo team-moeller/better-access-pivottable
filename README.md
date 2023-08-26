@@ -14,7 +14,7 @@ Take a look at the demo and let yourself be inspired by the possibilities.
 1. Download the [latest release](https://github.com/team-moeller/better-access-pivottable/releases/latest)
 2. Unpack the files to a trusted folder
 3. Run the database
-4. Push the button: "Create Pivot table"
+4. Push the button: "Create Pivot Table"
 
 ## How to integrate into your own database?
 **1. Import of the class modules**
