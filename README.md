@@ -21,11 +21,9 @@ Take a look at the demo and let yourself be inspired by the possibilities.
 
 First, all modules with the name "BAPT_*" must be imported from the demo database into your Access database.
 
-**2. Insert web browser control on form**
+**2. Insert edge browser control on form**
 
-The second step is to add a web browser control to display the chart on a form. It is best to give the control a meaningful name. This is required later in the VBA code. I like to use the name "ctlWebbrowser" for this.
-
-The following text is entered in the "ControlSource" property: = "about: blank". This ensures that the web browser control remains empty at the beginning.
+The second step is to add a edge browser control to display the chart on a form. It is best to give the control a meaningful name. This is required later in the VBA code. I like to use the name "ctlEdgeBrowser" for this.
 
 **3. First lines of code for the basic functionality**
 
