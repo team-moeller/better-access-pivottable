@@ -6,7 +6,7 @@ Better pivot tables for Access with pivottable.js
 Microsoft Access has lost the ability to create pivot tables and pivot charts with version Access 2013. The official recommendation is to use Excel for this purpose. 
 
 But why use Excel when we can have it in Access. There are many solutions for pivot tables based on Java Script available on the web. This project makes use of this.
-We create pivot tables using the Pivottable.js library and display them in the web browser control. The whole logic is hidden in a class module.
+We create pivot tables using the Pivottable.js library and display them in the edge browser control. The whole logic is hidden in a class module.
 
 Take a look at the demo and let yourself be inspired by the possibilities.
 
@@ -36,7 +36,7 @@ myPivot.ShowPivot
 ```
 
 * In line 1 a variable of the type BAPT_PivotTable is declared.
-* In line 2 a new instance of this class is created and the web browser control is assigned to the class module.
+* In line 2 a new instance of this class is created and the edge browser control is assigned to the class module.
 * The pivot table is created in line 3. 
 
 When you run this code, you will see a pivot table with some data. At the moment no data source is assigned. In such a case, Better-Access PivotTable simply shows a standard data source with 6 entries. This is particularly practical for our example. We have now done a quick test and fundamentally implemented the pivot table.
