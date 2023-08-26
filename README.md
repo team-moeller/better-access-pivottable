@@ -33,7 +33,7 @@ The best thing to do is to add another button. In the click event, paste the fol
 
 ```vba
 Dim myPivot As BAPT_PivotTable  
-Set myPivot = BAPT.PivotTable(Me.ctlWebbrowser)
+Set myPivot = BAPT.PivotTable(Me.ctlEdgeBrowser)
 myPivot.ShowPivot
 ```
 
