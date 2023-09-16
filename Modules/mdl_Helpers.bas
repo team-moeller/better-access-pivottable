@@ -2,7 +2,7 @@ Attribute VB_Name = "mdl_Helpers"
 '###############################################################################################
 '# Copyright (c) 2021, 2023 Thomas Möller                                                      #
 '# MIT License  => https://github.com/team-moeller/better-access-pivottable/blob/main/LICENSE  #
-'# Version 2.04.01  published: 26.08.2023                                                      #
+'# Version 2.05.05  published: 16.09.2023                                                      #
 '###############################################################################################
 
 Option Compare Database
@@ -53,7 +53,7 @@ Public Function File2OLE(ByVal Table As String, ByVal PrimaryKeyFieldName As Str
 
     Open PathFilename For Binary Access Read Lock Read Write As FileID
 
-    FileSize = FileLen(PathFilename)
+    FileSize = FileLen(PathFilename) - 1      '-1 to exclude NUL at the end
     ReDim Buffer(FileSize)
     rst(TargetFieldName) = Null
     Get FileID, , Buffer
